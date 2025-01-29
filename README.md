@@ -134,6 +134,8 @@ Open Command Prompt or PowerShell and run:
 
 cd /your/path/to/the/project
 
+**note: you should update main.py files with your actual path (/your/path/to/the/project)**
+
 
 	4.	Create a Virtual Environment
 Run the following command to create a virtual environment:
