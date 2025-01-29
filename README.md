@@ -103,13 +103,14 @@ This matrix shows the model’s performance in classifying promotion outcomes.
 # Conclusion
 
 This project demonstrates the feasibility of machine learning-driven HR decision-making by:
+
 	•	Enhancing accuracy and fairness in employee promotions.
 	•	Providing actionable training recommendations for career development.
 	•	Offering a user-friendly system that reduces HR workload.
 
 Through data-driven insights, this system establishes a benchmark for transparent, objective, and optimized HR management.
 
-Let me know if any modifications are needed.
+
 
 
 # Contributors
