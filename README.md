@@ -66,12 +66,11 @@ Requirements
 
 Database Setup
 
-	1.	Open MySQL and create a database named mangmentDB:
+1. Download the provided .sql file from the project repository
 
-CREATE DATABASE mangmentDB;
+2. Open config.py and update the DATABASE_URL with your MySQL username and password:
 
-
-	2.	Modify the config.py file by updating the database path and password.
+DATABASE_URL = "mysql+pymysql://your_username:your_password@localhost/managementDB"
 
 
 # 3- Installation Procedure
