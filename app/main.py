@@ -37,7 +37,7 @@ auth_token = "TWILIO-AUTH-TOKEN"
 client = Client(account_sid, auth_token)
 
 
-SECRET_KEY = "72e15850306775e5820106b5eeda480828fb13ba82dd8be3be4cbb720f84bdec"
+SECRET_KEY = "SECRET_KEY"
 
 # Create the FastAPI app
 app = FastAPI()
