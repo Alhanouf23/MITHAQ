@@ -1,6 +1,6 @@
 # Leveraging Machine Learning to Optimize Human Resources Management: Employee Promotion and Training Development
 
-**1-Technologies Used**
+**1- Technologies Used**
 
 **2- Installation Procedure**
 
