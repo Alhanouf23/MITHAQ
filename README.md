@@ -111,7 +111,7 @@ Let me know if any modifications are needed.
 
 # Contributors
 
-- Produced by F19
+**Produced by F19**
 
 Alhanouf Hammad Mutiq Alaloey            
 
@@ -121,6 +121,6 @@ Norah Abdulaziz Nasser Alammar
 
 Wasan Salem Abdullah Bin Owayed      
 
-- Supervied by 
+**Supervied by**
 
 Dr. Alaa Eledeen Mohamed
