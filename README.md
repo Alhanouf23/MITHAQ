@@ -57,14 +57,14 @@ This project aims to enhance employee promotion and training development by inte
 
 **System Deployment & Installation**
 
-Requirements
+**Requirements**
 
 	•	Python 3.7 - 3.11
 	•	MySQL Server
 	•	Twilio API (for OTP authentication)
 	•	Virtual Environment (for dependency isolation)
 
-Database Setup
+**Database Setup**
 
 1. Download the provided .sql file from the project repository
 
