@@ -68,7 +68,9 @@ https://drive.google.com/file/d/1gg4hZkoZ8YC9p-guBjrcq1nSAj36nO88/view?usp=shari
 
         2.	Move the Model File to the Model folder inside the MITHAQ folder
 
-								3.	Navigate to the Project Directory
+ MITHAQ --> Mdoel --> model file 
+
+	3.	Navigate to the Project Directory
 Open the Terminal and run:
 
 cd /your/path/to/the/project
@@ -105,6 +107,8 @@ python -m uvicorn app.main:app --reload
 https://drive.google.com/file/d/1gg4hZkoZ8YC9p-guBjrcq1nSAj36nO88/view?usp=sharing
 
         2.	Move the Model File to the Model folder inside the MITHAQ folder
+
+  MITHAQ --> Mdoel --> model file 
 
 	3.	Navigate to the Project Directory
 Open Command Prompt or PowerShell and run:
