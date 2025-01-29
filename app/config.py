@@ -3,8 +3,8 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-# Database URL (make sure this is correct)
-DATABASE_URL = "mysql+pymysql://root:Han23%40ham@localhost/mangmentDB"  # Adjust your DB credentials
+# Database URL ()
+DATABASE_URL = "mysql+pymysql://root:Han23%40ham@localhost/mangmentDB"  
 
 # Creating engine and sessionmaker
 engine = create_engine(DATABASE_URL)
