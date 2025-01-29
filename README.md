@@ -4,19 +4,19 @@
 
 **1- [Introduction](#1-introduction)**
 
-**2- [Technologies Used](#2-Technologies-Used)**
+**2- [Technologies Used](#2-technologies-used)**
 
-**3- [Installation Procedure](#3-Installation-Procedure)**
+**3- [Installation Procedure](#3-installation-procedure)**
 
-**4- [Performance & Results](#4-Performance--Results)**
+**4- [Performance & Results](#4-performance--results)**
 
-**5- [System Design & Architecture](#5-System-Design--Architecture)**
+**5- [System Design & Architecture](#5-system-design--architecture)**
 
-**6- [Conclusion](#6-Conclusion)**
+**6- [Conclusion](#6-conclusion)**
 
-**7- [Contributors](#7-Contributors)**
+**7- [Contributors](#7-contributors)**
 
-**8- [References](#8-References)**
+**8- [References](#8-references)**
 
 
 ## 1- Introduction
