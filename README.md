@@ -60,15 +60,68 @@ CREATE DATABASE mangmentDB;
 
 **Step	macOS	Windows**
 
-1. Navigate to Project Directory	cd /your/path/to/the/project	cd /your/path/to/the/project
+**Deployment Procedure for macOS**
 
-2. Create Virtual Environment	python3 -m venv venv	python3 -m venv venv
+	1.	Navigate to the Project Directory
+Open the Terminal and run:
 
-3. Activate Virtual Environment	source ./venv/bin/activate	.\venv\Scripts\activate
+cd /your/path/to/the/project
 
-4. Install Dependencies	pip install -r requirements.txt	pip install -r requirements.txt
 
-5. Launch System	python -m uvicorn app.main:app --reload	python -m uvicorn app.main:app --reload
+	2.	Create a Virtual Environment
+Run the following command to create a virtual environment:
+
+python3 -m venv venv
+
+
+	3.	Activate the Virtual Environment
+Use this command to activate the virtual environment:
+
+source ./venv/bin/activate
+
+
+	4.	Install Required Dependencies
+Install all required dependencies by running:
+
+pip install -r requirements.txt
+
+
+	5.	Launch the System
+Start the application by running:
+
+python -m uvicorn app.main:app --reload
+
+**Deployment Procedure for Windows**
+
+	1.	Navigate to the Project Directory
+Open Command Prompt or PowerShell and run:
+
+cd /your/path/to/the/project
+
+
+	2.	Create a Virtual Environment
+Run the following command to create a virtual environment:
+
+python -m venv venv
+
+
+	3.	Activate the Virtual Environment
+Activate the virtual environment using this command:
+
+.\venv\Scripts\activate
+
+
+	4.	Install Required Dependencies
+Install all required dependencies by running:
+
+pip install -r requirements.txt
+
+
+	5.	Launch the System
+Start the application by running:
+
+python -m uvicorn app.main:app --reload
+
 
 # Performance & Results
 
