@@ -97,6 +97,7 @@ The proposed solution achieved a high accuracy of 94.23% using the same dataset 
 
 **Confusion Matrix**
 
+![photo_5823247566681273359_x](https://github.com/user-attachments/assets/c7852411-6221-4073-9a55-322dcc0e379a)
 
 This matrix shows the model’s performance in classifying promotion outcomes.
 
