@@ -48,11 +48,6 @@ This project aims to enhance employee promotion and training development by inte
 	•	FastAPI – Web framework for backend and API integration.
 	•	GitHub – Version control and repository management.
 	•	Kaggle – Dataset source and Jupyter Notebook environment.
-	•	Microsoft Office Suite – Report documentation, analysis, and presentations.
-	•	Figma – UI/UX prototyping for a seamless user experience.
-	•	Lucidchart & Draw.io – Creating system flowcharts and data flow diagrams.
-	•	Canva – Visual documentation and presentations.
-	•	Google Forms – Collecting feedback and user inputs.
 	•	Twilio API – For communication functionalities such as OTP verification.
 
 **System Deployment & Installation**
