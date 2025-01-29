@@ -2,7 +2,7 @@
 
 # Table of content
 
-**1- [Introduction](#1-Introduction)**
+**1- [Introduction](#1-introduction)**
 
 **2- [Technologies Used](#2-Technologies-Used)**
 
