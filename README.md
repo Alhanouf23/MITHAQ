@@ -160,12 +160,10 @@ python -m uvicorn app.main:app --reload
 
 # 4- Performance & Results
 
-The model achieved 94.23% accuracy, outperforming previous research:
+The proposed solution achieved a high accuracy of 94.23% using the same dataset in [3], surpassing previous research:
 	•	81.15% accuracy in study [1]
 	•	91.70% accuracy in study [2]
  
-The proposed solution achieved a high accuracy of 94.23% using the same dataset in [3], surpassing previous studies (81.15% [1] and 91.70% [2])
-
 **Confusion Matrix**
 
 ![photo_5823247566681273359_x](https://github.com/user-attachments/assets/c7852411-6221-4073-9a55-322dcc0e379a)
