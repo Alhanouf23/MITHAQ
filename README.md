@@ -1,5 +1,12 @@
 # Leveraging Machine Learning to Optimize Human Resources Management: Employee Promotion and Training Development
-  
+
+# 1-Technologies Used
+# 2- Installation Procedure
+# 3- Performance & Results
+# 4- System Design & Architecture
+# 5- Conclusion
+# 6- Contributors
+
 
 
 This project aims to enhance employee promotion and training development by integrating machine learning (ML), specifically the Random Forest (RF) model, to improve decision-making in HR management. By addressing inefficiencies and biases in traditional HR processes, the system ensures fair, transparent, and data-driven employee evaluations. It also introduces training recommendations for non-promoted employees to support their professional growth.
@@ -145,6 +152,15 @@ python -m uvicorn app.main:app --reload
 The model achieved 94.23% accuracy, outperforming previous research:
 	•	81.15% accuracy in study [1]
 	•	91.70% accuracy in study [2]
+ 
+The proposed solution achieved a high accuracy of 94.23% using the same dataset in [3], surpassing previous studies (81.15% [1] and 91.70% [2])
+
+**Confusion Matrix**
+
+![photo_5823247566681273359_x](https://github.com/user-attachments/assets/c7852411-6221-4073-9a55-322dcc0e379a)
+
+This matrix shows the model’s performance in classifying promotion outcomes.
+
 
 **Key Optimization Techniques**
 
@@ -162,15 +178,6 @@ To visualize the system’s workflow, below Flowchart:
 
 This flowchart represents the logic behind the system.
 
-
-
-The proposed solution achieved a high accuracy of 94.23% using the same dataset in [3], surpassing previous studies (81.15% [1] and 91.70% [2])
-
-**Confusion Matrix**
-
-![photo_5823247566681273359_x](https://github.com/user-attachments/assets/c7852411-6221-4073-9a55-322dcc0e379a)
-
-This matrix shows the model’s performance in classifying promotion outcomes.
 
 # Conclusion
 
@@ -196,6 +203,7 @@ Alya Salman Yousef Almallahi
 Norah Abdulaziz Nasser Alammar           
 
 Wasan Salem Abdullah Bin Owayed      
+
 
 **Supervied by**
 
