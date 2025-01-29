@@ -2,21 +2,21 @@
 
 # Table of content
 
-**1- [Introduction](#1- Introduction)**
+**1- [Introduction](#1-Introduction)**
 
-**2- [Technologies Used](#2- Technologies Used)**
+**2- [Technologies Used](#2-TechnologiesUsed)**
 
-**3- [Installation Procedure](#3- Installation Procedure)**
+**3- [Installation Procedure](#3-InstallationProcedure)**
 
-**4- [Performance & Results](#4- Performance & Results)**
+**4- [Performance & Results](#4-Performance&Results)**
 
-**5- [System Design & Architecture](#5- System Design & Architecture)**
+**5- [System Design & Architecture](#5-SystemDesign&Architecture)**
 
-**6- [Conclusion](#6- Conclusion)**
+**6- [Conclusion](#6-Conclusion)**
 
-**7- [Contributors](#7- Contributors)**
+**7- [Contributors](#7-Contributors)**
 
-**8- [References](# 8- References)**
+**8- [References](#8-References)**
 
 
 # 1- Introduction
