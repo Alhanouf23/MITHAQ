@@ -67,9 +67,8 @@ CREATE DATABASE mangmentDB;
 https://drive.google.com/file/d/1gg4hZkoZ8YC9p-guBjrcq1nSAj36nO88/view?usp=sharing
 
         2.	Move the Model File to the Model folder inside the MITHAQ folder
-	
 
-	3.	Navigate to the Project Directory
+								3.	Navigate to the Project Directory
 Open the Terminal and run:
 
 cd /your/path/to/the/project
