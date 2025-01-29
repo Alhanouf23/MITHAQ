@@ -22,7 +22,7 @@ finally:
     if 'connection' in locals():
         connection.close()
 
-# Example of using the session in your FastAPI or any other application logic
+#  Use the session FastAPI 
 def get_db():
     db = SessionLocal()
     try:
