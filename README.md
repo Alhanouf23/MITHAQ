@@ -2,24 +2,24 @@
 
 # Table of content
 
-**1- [Introduction](#1-introduction)**
+1- Introduction
 
-**2- [Technologies Used](#2-technologies-used)**
+2- Technologies Used
 
-**3- [Installation Procedure](#3-installation-procedure)**
+3- Installation Procedure
 
-**4- [Performance & Results](#4-performance--results)**
+4- Performance & Results
 
-**5- [System Design & Architecture](#5-system-design--architecture)**
+5- System Design & Architecture
 
-**6- [Conclusion](#6-conclusion)**
+6- Conclusion
 
-**7- [Contributors](#7-contributors)**
+7- Contributors
 
-**8- [References](#8-references)**
+8- References
 
 
-## 1- Introduction
+# 1- Introduction
 This project aims to enhance employee promotion and training development by integrating machine learning (ML), specifically the Random Forest (RF) model, to improve decision-making in HR management. By addressing inefficiencies and biases in traditional HR processes, the system ensures fair, transparent, and data-driven employee evaluations. It also introduces training recommendations for non-promoted employees to support their professional growth.
 
 
@@ -32,7 +32,7 @@ This project aims to enhance employee promotion and training development by inte
 	•	User-Friendly Interface – Developed with FastAPI and an interactive web-based frontend.
 	•	Security & Authentication – OTP authentication is integrated for enhanced security.
 
-## 2- Technologies Used
+# 2- Technologies Used
 
 **Programming Languages & Libraries**
 
@@ -74,7 +74,7 @@ CREATE DATABASE mangmentDB;
 	2.	Modify the config.py file by updating the database path and password.
 
 
-## 3- Installation Procedure
+# 3- Installation Procedure
 
 **Step	macOS	Windows**
 
@@ -158,7 +158,7 @@ Start the application by running:
 python -m uvicorn app.main:app --reload
 
 
-## 4- Performance & Results
+# 4- Performance & Results
 
 The model achieved 94.23% accuracy, outperforming previous research:
 	•	81.15% accuracy in study [1]
@@ -180,7 +180,7 @@ This matrix shows the model’s performance in classifying promotion outcomes.
 	•	SMOTE (Synthetic Minority Oversampling Technique) for data balancing.
 	•	Robust data preprocessing to improve ML performance.
 
-## 5- System Design & Architecture
+# 5- System Design & Architecture
 
 To visualize the system’s workflow, below Flowchart:
 
@@ -190,7 +190,7 @@ To visualize the system’s workflow, below Flowchart:
 This flowchart represents the logic behind the system.
 
 
-## 6- Conclusion
+# 6- Conclusion
 
 This project demonstrates the feasibility of machine learning-driven HR decision-making by:
 
@@ -203,7 +203,7 @@ Through data-driven insights, this system establishes a benchmark for transparen
 
 
 
-## 7- Contributors
+# 7- Contributors
 
 **Produced by F19**
 
@@ -220,7 +220,7 @@ Wasan Salem Abdullah Bin Owayed
 
 Dr. Alaa Eledeen Mohamed
 
-## 8- References
+# 8- References
 
 	[1] M. A. Jafor, M. A. H. Wadud, K. Nur, and M. M. Rahman, “Employee Promotion Prediction Using Improved AdaBoost Machine Learning Approach,” AIUB Journal of Science and Engineering (AJSE), vol. 22, no. 3, pp. 258–266, Dec. 2023, doi: https://doi.org/10.53799/ajse.v22i3.781.
 
