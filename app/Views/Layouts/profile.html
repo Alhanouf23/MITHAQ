@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        /* Reset default margins, paddings, and set box-sizing to border-box for consistent element sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Styles of the main body */
+
+        /* Set general styles for the body, including font, background, and flex layout */
+        #main-body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            flex-direction: column; /* Arrange content in a vertical direction */
+        }
+
+
+        body {
+            background-color: #E3F2FD;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Start of header styles */
+
+        /* Header container with shadow and bottom border */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Logo styles */
+        .logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Navigation link styles */
+        .nav-link {
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Hover effect for navigation links */
+        .nav-link:hover {
+            background-color: #f1f1f1;
+            color: #007bff;
+        }
+
+        /* Active navigation link */
+        .nav-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Profile icon image */
+        .profile-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* End of header styles */
+
+        /* Menu Section */
+
+        /* Profile icon container */
+        .profile-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Profile image inside menu */
+        .profile-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* Dropdown menu styles */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 180px;
+            z-index: 1000;
+        }
+
+        /* Show dropdown menu when active */
+        .dropdown-menu.active {
+            display: block;
+            /* Make menu visible */
+        }
+
+        /* Dropdown item styles */
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #444;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        /* ========== Dropdown Menu Styles ========== */
+
+        /* 
+   - Sets the size of icons inside the dropdown menu 
+   - Ensures all icons are uniform in width and height
+*/
+        .dropdown-item img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 
+   - Changes the background color when hovering over dropdown items 
+   - Improves user interaction by providing visual feedback
+*/
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* 
+   - Styles the divider (horizontal line) inside the dropdown menu 
+   - Used to separate different sections in the dropdown list
+*/
+        .dropdown-divider {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
+        }
+
+        /* ========== Main Container Layout ========== */
+
+        /* 
+   - Centers the main content of the page
+   - Aligns child elements at the top and spaces them evenly
+*/
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            gap: 40px;
+        }
+
+        /* ========== Profile Sidebar Styles ========== */
+
+        /* 
+   - Styles the profile section on the left side 
+   - Adds background, shadow, and spacing for a clean look
+*/
+        .profile-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 190px;
+            text-align: center;
+            height: 390px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 45px;
+        }
+
+        /*  Styles the profile picture inside the profile container */
+        .profile-container img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        /* Styles the profile name (h2 heading) */
+        .profile-container h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px; /* Adds space below */
+        }
+
+        /* 
+   - Styles the profile description (paragraph)*/
+        .profile-container p {
+            font-size: 14px;
+            /* Slightly smaller font size */
+            color: #666;
+            /* Medium gray text */
+            margin-bottom: 20px;
+            /* Adds spacing below */
+        }
+
+        /* 
+   - Styles the profile menu links
+   - Adds spacing and a bottom border for separation
+*/
+        .profile-container a {
+            display: block; /* Ensures links take up full width */
+            font-size: 14px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px; /* Adds space below */
+            padding-bottom: 5px; /* Adds padding under the text */
+            border-bottom: 1px solid #ddd; /* Adds a divider line */
+        }
+
+        /* 
+   - Styles the "Change Password" link 
+   - Uses a lighter color for differentiation
+*/
+        .profile-container a.change-password {
+            color: #aaa;
+        }
+
+
+        .profile-container a.personal-info {
+            color: #333;
+            /* Dark gray */
+        }
+
+        /* ========== Edit Button ========== */
+
+        .edit-btn {
+            display: inline-block; /* Ensures proper inline spacing */
+            background-color: #007bff;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* 
+   - Changes the button color when hovered
+   - Provides a visual indication of interaction
+*/
+        .edit-btn:hover {
+            background-color: #0056b3;
+            /* Darker blue */
+        }
+
+        /* ========== Information Section ========== */
+
+        /* 
+   - Styles the container for displaying user information
+   - Centers text and provides spacing below
+*/
+        .info-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* 
+   - Styles the section title (h1)
+   - Increases font size for emphasis
+*/
+        .info-section h1 {
+            font-size: 24px;
+            margin: 0;
+            color: #333;
+        }
+
+        /* ========== Info Boxes (User Details) ========== */
+
+        /* 
+   - Creates a grid layout for displaying user information
+   - Uses two equal columns for proper alignment
+*/
+        .info-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            background-color: #C2E3FB;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            width: 600px;
+        }
+
+        /* 
+   - Styles individual information boxes inside the grid
+   - Adds a white background with padding and rounded edges
+*/
+        .info-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 
+   - Styles the heading inside each info box
+   - Increases font size and provides spacing
+*/
+        .info-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* 
+   - Styles the text inside each info box
+   - Uses a slightly larger font size for better readability
+*/
+        .info-box p {
+            margin: 0;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+    <script>
+        /* ========== Dropdown Menu Toggle Function ========== */
+
+/* 
+   - This function is triggered when the profile icon is clicked.
+   - It selects the dropdown menu and toggles its visibility 
+     by adding or removing the "active" class.
+*/
+function toggleDropdown() {
+    const dropdown = document.querySelector('.dropdown-menu'); // Selects the dropdown menu element
+    dropdown.classList.toggle('active'); // Toggles the "active" class to show or hide the menu
+}
+
+/* 
+   - Event listener to close the dropdown menu when clicking outside of it.
+   - It listens for any click on the page and checks if the click occurred outside the profile icon.
+   - If so, it removes the "active" class, hiding the dropdown.
+*/
+window.addEventListener('click', (e) => {
+    const profileIcon = document.querySelector('.profile-icon'); // Selects the profile icon container
+    const dropdown = document.querySelector('.dropdown-menu'); // Selects the dropdown menu element
+
+    // Checks if the clicked target is outside the profile icon
+    if (!profileIcon.contains(e.target)) {
+        dropdown.classList.remove('active'); // Hides the dropdown menu by removing "active" class
+    }
+});
+
+/* ========== Logout Functionality ========== */
+
+/* 
+   - This function ensures the logout process runs correctly.
+   - It waits for the page to fully load before accessing the logout button.
+   - When the logout button is clicked:
+     1. It prevents the default action (if the button is inside a form or link).
+     2. It asks the user for confirmation before logging out.
+     3. If confirmed, it sends a POST request to the backend API for logout.
+     4. If the response is successful, the user is redirected to the homepage.
+     5. If an error occurs, an alert is shown.
+*/
+document.addEventListener("DOMContentLoaded", function () {
+    const logoutButton = document.getElementById("logout-btn"); // Selects the logout button
+
+    // Checks if the logout button exists before adding event listeners
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function (e) {
+            e.preventDefault(); // Prevents the default action of the logout button
+
+            // Displays a confirmation popup to ensure the user wants to log out
+            if (confirm("Are you sure you want to logout?")) {
+                // Sends a POST request to the backend logout API
+                fetch("http://127.0.0.1:8000/logout", { // Backend logout endpoint
+                    method: "POST", // Uses POST method to send the logout request
+                    headers: {
+                        "Content-Type": "application/json", // Specifies that the request body is JSON
+                    },
+                })
+                .then(response => {
+                    // If the logout request is successful, redirect to the homepage
+                    if (response.ok) {
+                        window.location.href = "/"; // Redirects the user to the homepage
+                    } else {
+                        alert("Failed to logout. Please try again."); // Shows an alert if logout fails
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during logout:", error); // Logs error in console
+                    alert("An error occurred during logout. Please try again."); // Shows an error alert
+                });
+            }
+        });
+    } else {
+        console.error("Logout button not found on this page."); // Logs an error if the button is missing
+    }
+});
+
+/* ========== Fetch Admin Profile Data from API ========== */
+
+/* 
+   - This function retrieves admin profile data from the backend API.
+   - It sends an asynchronous GET request to fetch the profile details.
+   - If the request is successful:
+     1. The profile container is updated with the admin's name and ID.
+     2. The personal information section is dynamically updated with fetched data.
+   - If the request fails, an error message is displayed.
+*/
+async function fetchAdminProfile() {
+    try {
+        // Sends a GET request to retrieve admin profile data from the backend API
+        const response = await fetch("http://127.0.0.1:8000/profile/data");
+
+        // If the response is not successful, display an error message in the UI
+        if (!response.ok) {
+            document.querySelector(".info-container").innerHTML = "<p>Error loading data.</p>";
+            throw new Error("Failed to fetch admin data"); // Throws an error to be caught in the catch block
+        }
+
+        // Parses the response data as JSON
+        const admin = await response.json();
+
+        // Updates the profile section with the admin's name and ID
+        document.querySelector(".profile-container h2").innerText = admin.full_name;
+        document.querySelector(".profile-container p").innerText = `ID: ${admin.admin_id}`;
+
+        // Dynamically updates the admin's personal information section
+        document.querySelector(".info-container").innerHTML = `
+            <div class="info-box">
+                <h3>Full Name</h3>
+                <p>${admin.full_name}</p>
+            </div>
+            <div class="info-box">
+                <h3>Date of Birth</h3>
+                <p>${admin.date_of_birth}</p>
+            </div>
+            <div class="info-box">
+                <h3>Region</h3>
+                <p>${admin.region}</p>
+            </div>
+            <div class="info-box">
+                <h3>Gender</h3>
+                <p>${admin.gender}</p>
+            </div>
+            <div class="info-box">
+                <h3>Phone Number</h3>
+                <p>${admin.phone_number}</p>
+            </div>
+            <div class="info-box">
+                <h3>Department</h3>
+                <p>${admin.department}</p>
+            </div>
+        `;
+    } catch (error) {
+        console.error("Error fetching admin data:", error); // Logs error in console
+    }
+}
+
+/* 
+   - This ensures the fetchAdminProfile function runs as soon as the page loads.
+   - It will automatically retrieve and display the admin's data when the page is opened.
+*/
+window.onload = fetchAdminProfile;
+
+
+    </script>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header class="main-header">
+        <img src="/Assets/logo.png" alt="Logo" class="logo">
+        <nav class="navbar">
+            <a href="/main" class="nav-link active">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/promotionCriteria" class="nav-link">Promotion Criteria</a>
+            <a href="/reportsPage" class="nav-link">Reports</a>
+            <a href="/resultsPage" class="nav-link">Results</a>
+        </nav>
+        <div class="profile-icon" onclick="toggleDropdown()">
+            <img src="/Assets/profile-icon.png" alt="Profile">
+            <div class="dropdown-menu">
+                <a href="/profile" class="dropdown-item">
+                    <img src="/Assets/settings.png" alt="Settings">Account settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a id="logout-btn" class="dropdown-item">
+                    <img src="/Assets/logout.png" alt="Logout">Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Profile Sidebar -->
+        <div class="profile-container">
+            <img id="main-image" src="/Assets/profile-img.png" alt="Profile Picture">
+            <h2>Loading...</h2>
+            <p>ID: Loading...</p>
+            <div class="profile-options">
+                <a href="/profile" class="personal-info">Personal Information</a>
+                <a href="/editPassword" class="change-password">Change Password</a>
+                <button class="edit-btn" onclick="location.href='/editProfile'">Edit</button>
+            </div>
+        </div>
+
+        <!-- Information Section -->
+        <div>
+            <div class="info-section">
+                <h1>Personal Information</h1>
+            </div>
+            <div class="info-container">
+                <div class="info-box">
+                    <h3>Full Name</h3>
+                    <p id="admin-name">Loading...</p>
+                </div>
+                <div class="info-box">
+                    <h3>Date of Birth</h3>
+                    <p id="admin-dob">Loading...</p>
+                </div>
+                <div class="info-box">
+                    <h3>Region</h3>
+                    <p id="admin-region">Loading...</p>
+                </div>
+                <div class="info-box">
+                    <h3>Gender</h3>
+                    <p id="admin-gender">Loading...</p>
+                </div>
+                <div class="info-box">
+                    <h3>Phone Number</h3>
+                    <p id="admin-phone">Loading...</p>
+                </div>
+                <div class="info-box">
+                    <h3>Department</h3>
+                    <p id="admin-department">Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

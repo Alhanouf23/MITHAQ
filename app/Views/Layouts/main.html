@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MITHAQ Home Page</title>
+    <style>
+        /* Styles of the whole page */
+
+        /* Reset default margins, paddings, and set box-sizing to border-box for consistent element sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Styles of the main body */
+
+        /* Set general styles for the body, including font, background, and flex layout */
+        #main-body {
+            font-family: Arial, sans-serif; /* Set font style */
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6; /* Improve readability by setting line spacing */
+            height: 100vh; /* Set height to full viewport */
+            display: flex; /* Use flexbox for layout */
+            flex-direction: column; /* Arrange content in a vertical direction */
+        }
+
+        /* Start of header styles */
+
+        /* Header container with shadow and bottom border */
+        .main-header {
+            display: flex; /* Use flexbox for horizontal layout */
+            justify-content: space-between; /* Space elements evenly */
+            align-items: center; /* Align items vertically */
+            background-color: #ffffff;
+            padding: 10px 20px; /* Add padding around header */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+            width: 100%; /* Set full width */
+            border-bottom: 1px solid #ddd; /* Add bottom border */
+        }
+
+        /* Logo styles */
+        .logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            display: flex; /* Display links in a row */
+            gap: 10px; /* Add space between links */
+        }
+
+        /* Navigation link styles */
+        .nav-link {
+            text-decoration: none; /* Remove underline from links */
+            color: #444;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 50px; /* Round the corners */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+        }
+
+        /* Hover effect for navigation links */
+        .nav-link:hover {
+            background-color: #f1f1f1; /* Light gray background on hover */
+            color: #007bff; /* Change text color to blue */
+        }
+
+        /* Active navigation link */
+        .nav-link.active {
+            background-color: #007bff; /* Blue background for active link */
+            color: white; /* White text for contrast */
+        }
+
+        /* Profile icon image */
+        .profile-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%; /* Make image circular */
+        }
+
+        /* End of header styles */
+
+        /* Menu Section */
+
+        /* Profile icon container */
+        .profile-icon {
+            position: relative; /* Allows dropdown to be positioned relative to this */
+            cursor: pointer; /* Change cursor to pointer */
+        }
+
+        /* Profile image inside menu */
+        .profile-icon img {
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%;/* Make it a circle */
+        }
+
+        /* Dropdown menu styles */
+        .dropdown-menu {
+            display: none; /* Hide by default */
+            position: absolute; /* Position relative to profile icon */
+            top: 100%; /* Align menu directly below profile icon */
+            right: 0; /* Align to the right edge */
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px; /* Round the edges */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+            width: 180px;
+            z-index: 1000;/* Ensure it appears above other elements */
+        }
+
+        /* Show dropdown menu when active */
+        .dropdown-menu.active {
+            display: block; /* Make menu visible */
+        }
+
+        /* Dropdown item styles */
+        .dropdown-item {
+            display: flex; /* Align items horizontally */
+            align-items: center; /* Center items vertically */
+            gap: 10px; /* Space between icon and text */
+            padding: 10px 15px;
+            text-decoration: none; /* Remove underline */
+            color: #444;
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        /* Icon size inside dropdown */
+        .dropdown-item img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Hover effect for dropdown items */
+        .dropdown-item:hover {
+            background-color: #f1f1f1; /* Change background on hover */
+        }
+
+        /* Divider line inside dropdown menu */
+        .dropdown-divider {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
+        }
+
+        /* Main Section */
+
+        /* Centering main content section */
+        #unique-main-section {
+            display: flex; /* Use flexbox */
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            padding: 20px;
+            background-color: white;
+            flex: 1; /* Take up available space */
+        }
+
+        /* Container for text and image */
+        #content-container {
+            display: flex; /* Arrange elements in a row */
+            align-items: center; /* Align vertically */
+            justify-content: space-between; /* Spread elements evenly */
+            gap: 20px; /* Space between elements */
+            max-width: 1000px; /* Limit container width */
+            margin: 0 auto; /* Center horizontally */
+        }
+
+        /* Text container */
+        #text-container {
+            flex: 1; /* Allow text to take available space */
+            text-align: left; /* Align text to the left */
+        }
+
+        /* Title styles inside the main section */
+        #unique-main-title {
+            margin: 0; /* Remove margin */
+            font-size: 36px;
+            font-weight: bold; /* Make text bold */
+            color: #000;
+            line-height: 1.2; /* Adjust spacing */
+        }
+
+        /* Description text inside the main section */
+        #main-description {
+            margin-top: 10px; /* Add space above */
+            font-size: 16px;
+            font-weight: 400;
+            color: #666;
+            line-height: 1.6; /* Improve readability */
+        }
+
+        /* Image container */
+        #image-container {
+            flex: 1; /* Allow image to take up space */
+            text-align: center; /* Center image */
+        }
+
+        /* Styles for the main image */
+        #main-image {
+            max-width: 100%; /* Ensure it scales */
+            height: auto; /* Keep aspect ratio */
+        }
+
+        /* Features Section */
+
+        /* Features container */
+        #unique-features {
+            display: flex; /* Use flexbox */
+            justify-content: center; /* Center features horizontally */
+            gap: 20px; /* Add space between features */
+            padding: 20px;
+            background-color: #E3F2FD;
+        }
+
+        /* Individual feature box */
+        .unique-feature {
+            text-align: center; /* Center content */
+            padding: 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px; /* Round the corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+            flex: 1; /* Allow flexible width */
+            max-width: 250px; /* Limit max width */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add smooth effects */
+        }
+
+        /* Hover effect for features */
+        .unique-feature:hover {
+            transform: translateY(-5px);  /* Slightly move up */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increase shadow */
+        }
+
+        /* Feature icon */
+        .unique-feature img {
+            height: 50px;
+            margin-bottom: 10px; /* Add space below */
+        }
+
+        /* Feature title */
+        .unique-feature h3 {
+            margin: 10px 0 5px; /* Adjust margin */
+            font-size: 16px;    /* Set font size */
+            color: #333;
+        }
+
+        /* Feature description */
+        .unique-feature p {
+            font-size: 14px;
+            /* Set font size */
+            color: #666;
+            /* Light gray text */
+        }
+    </style>
+
+    <script>
+
+        // Function to toggle the dropdown menu visibility
+// This function adds or removes the "active" class to display or hide the menu.
+function toggleDropdown() {
+    const dropdown = document.querySelector('.dropdown-menu'); // Select the dropdown menu element
+    dropdown.classList.toggle('active'); // Toggle the "active" class to show/hide the menu
+}
+
+// Event listener to close the dropdown menu if the user clicks outside of it
+window.addEventListener('click', (e) => {
+    const profileIcon = document.querySelector('.profile-icon'); // Select the profile icon container
+    const dropdown = document.querySelector('.dropdown-menu'); // Select the dropdown menu element
+
+    // Check if the click event happened outside of the profile icon
+    if (!profileIcon.contains(e.target)) {
+        dropdown.classList.remove('active'); // Hide the dropdown menu
+    }
+});
+
+// Handle logout functionality
+// This ensures that the logout button is functional after the page fully loads
+document.addEventListener("DOMContentLoaded", function () {
+    const logoutButton = document.getElementById("logout-btn"); // Select the logout button
+
+    // Check if the logout button exists on the page
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function (e) {
+            e.preventDefault(); // Prevent the default behavior of the anchor tag (if used in a link)
+
+            // Display a confirmation dialog before logging out
+            if (confirm("Are you sure you want to logout?")) {
+                // Send a logout request to the backend API
+                fetch("http://127.0.0.1:8000/logout", { // Replace with actual backend URL
+                    method: "POST", // Use POST method for logout action
+                    headers: {
+                        "Content-Type": "application/json", // Set the request content type to JSON
+                    },
+                })
+                .then(response => {
+                    // Check if the logout request was successful
+                    if (response.ok) {
+                        window.location.href = "/"; // Redirect to the home page after successful logout
+                    } else {
+                        alert("Failed to logout. Please try again."); // Show an alert if logout fails
+                    }
+                })
+                .catch(error => {
+                    console.error("Error during logout:", error); // Log the error in the console
+                    alert("An error occurred during logout. Please try again."); // Show an error message
+                });
+            }
+        });
+    } else {
+        console.error("Logout button not found on this page."); // Log an error if the button is missing
+    }
+});
+
+    </script>
+
+</head>
+
+<body id="main-body">
+
+    <!-- Header Section-->
+    <header class="main-header">
+        <img src="/Assets/logo.png" alt="Logo" class="logo">
+        <nav class="navbar">
+            <a href="/main" class="nav-link active">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/promotionCriteria" class="nav-link">Promotion Criteria</a>
+            <a href="/reportsPage" class="nav-link">Reports</a>
+            <a href="/resultsPage" class="nav-link">Results</a>
+        </nav>
+        <div class="profile-icon" onclick="toggleDropdown()">
+            <img src="/Assets/profile-icon.png" alt="Profile">
+            <div class="dropdown-menu">
+                <a href="/profile" class="dropdown-item">
+                    <img src="/Assets/settings.png" alt="Settings">Account settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a id="logout-btn" class="dropdown-item">
+                    <img src="/Assets/logout.png" alt="Logout">Logout
+                </a>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Main Section -->
+    <section id="unique-main-section">
+        <div id="content-container">
+            <div id="text-container">
+                <h1 id="unique-main-title">Welcome to MITHAQ!</h1>
+                <p id="main-description">
+                    Your partner in career growth, offering innovative tools for seamless advancement, skill
+                    development, and fair opportunities to achieve your professional goals.
+                </p>
+            </div>
+            <div id="image-container">
+                <img id="main-image" src="/Assets/ImgMain.png" alt="Illustration">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="unique-features">
+        <div class="unique-feature" id="unique-feature-ai">
+            <img src="/Assets/ai-icon.png" alt="AI Powered Promotions">
+            <h3>AI-Powered Employee Promotions</h3>
+            <p>Seamless and fair promotion recommendations.</p>
+        </div>
+        <div class="unique-feature" id="unique-feature-training">
+            <img src="/Assets/training-icon.png" alt="Training Recommendations">
+            <h3>Training Recommendations</h3>
+            <p>Custom training suggestions for employees.</p>
+        </div>
+        <div class="unique-feature" id="unique-feature-analytics">
+            <img src="/Assets/analytics-icon.png" alt="Employee Analytics">
+            <h3>Employee Analytics</h3>
+            <p>Advanced insights into employee performance.</p>
+        </div>
+        <div class="unique-feature" id="unique-feature-report">
+            <img src="/Assets/report-icon.png" alt="Comprehensive Report">
+            <h3>Comprehensive Employee Report</h3>
+            <p>Detailed reporting to guide career development.</p>
+        </div>
+    </section>
+
+</body>
+
+</html>

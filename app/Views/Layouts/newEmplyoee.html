@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <style>
+        /* General body styling */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #E3F2FD;
+
+        }
+
+        /* Container for the dashboard */
+        .dashboard-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header styling for the dashboard */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+        }
+
+        /* Styling for navigation links */
+        .nav-link {
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 50px;
+        }
+
+        /* Profile icon container */
+        .profile-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: visible;
+            position: relative;
+            margin-right: 30px;
+        }
+
+        .profile-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            cursor: pointer;
+
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Styling for active navigation links */
+        .nav-link.active {
+            background-color: #1e88e5;
+            color: #fff;
+        }
+
+        .profile-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* Dropdown menu styling */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            /* Align directly below the profile icon */
+            right: 0;
+            /* Align menu to the right edge of the image */
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 180px;
+            z-index: 1000;
+        }
+
+        /* Make dropdown menu visible when active */
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #444;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .dropdown-item img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
+        }
+
+        /* Centered container for form elements */
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            height: 100%;
+            padding-top: 50px;
+            margin-top: 70px;
+        }
+
+        /* Form styling */
+        .form-box {
+            background-color: #C2E3FB;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            width: 400px;
+            margin: 0 auto;
+            text-align: left;
+            font-family: Arial, sans-serif;
+        }
+
+        h2 {
+            font-size: 30px;
+            color: #000000;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        h3 {
+            font-size: 20px;
+            color: #4B5161;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        p {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+            padding: 7px 7px;
+            margin: -10px auto;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: reguler;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #c1d8f0;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+
+        }
+
+        .form-row .form-group label {
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+        }
+
+        .date-select {
+            display: flex;
+            gap: 10px;
+        }
+
+        .date-select select {
+            flex: 1;
+            border-radius: 4px;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button[type="button"] {
+            background-color: #1e88e5;
+            color: white;
+        }
+
+        button[type="submit"] {
+            background-color: #1e88e5;
+            color: white;
+        }
+
+        body.blur .center-container,
+        body.blur .form-box,
+        body.blur .form-group,
+        body.blur .form-buttons {
+            filter: blur(2px);
+            pointer-events: none;
+        }
+
+        #alertContainer {
+            filter: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+        }
+
+        .alert-container {
+            display: none;
+        }
+
+        .alert-box p {
+            color: black;
+        }
+
+        .alert-box {
+            text-align: center;
+        }
+
+        .close-btn {
+            background-color: #1e88e5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .close-btn:hover {
+            background-color: #0056b3;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main dashboard container -->
+    <div class="dashboard-container">
+        <header>
+            <!-- Header Section -->
+            <div class="dashboard-container">
+                <header class="dashboard-header">
+                    <img src="Assets/logo.png" alt="Logo" class="logo">
+                    <nav class="navbar">
+                        <a href="/main" class="nav-link">Home</a>
+                        <a href="/dashboard" class="nav-link active">Dashboard</a>
+                        <a href="/promotionCriteria" class="nav-link">Promotion Criteria</a>
+                        <a href="/reportsPage" class="nav-link">Reports</a>
+                        <a href="/resultsPage" class="nav-link">Results</a>
+                    </nav>
+                    <div class="profile-icon" onclick="toggleDropdown()">
+                        <img src="Assets/profile-icon.png" alt="Profile">
+                        <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item">
+                                <img src="Assets/settings.png" alt="Settings">Account settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a id="logout-btn" class="dropdown-item">
+                                <img src="Assets/logout.png" alt="Logout">Logout
+                            </a>
+                        </div>
+                    </div>
+                </header>
+                <div class="center-container">
+                    <div class="form-box">
+                        <h2>New Employee Details</h2>
+                        <p>Please ensure the entered information is accurate.</p>
+
+                        <h3>New Employee information.</h3>
+
+                        <form id="employeeForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="first_name">First Name</label>
+                                    <input type="text" id="first_name" name="first_name" placeholder="Enter first name"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="last_name">Last Name</label>
+                                    <input type="text" id="last_name" name="last_name" placeholder="Enter last name"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="DoB">Birth Date</label>
+                                <div class="date-select">
+                                    <select id="month" required>
+                                        <option value="">Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                    <select id="day" required>
+                                        <option value="">Day</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                        <option value="25">25</option>
+                                        <option value="26">26</option>
+                                        <option value="27">27</option>
+                                        <option value="28">28</option>
+                                        <option value="29">29</option>
+                                        <option value="30">30</option>
+                                        <option value="31">31</option>
+                                    </select>
+                                    <select id="year" required>
+                                        <option value="">Year</option>
+                                        <option value="1994">1994</option>
+                                        <option value="1995">1995</option>
+                                        <option value="1996">1996</option>
+                                        <option value="1997">1997</option>
+                                        <option value="1998">1998</option>
+                                        <option value="1999">1999</option>
+                                        <option value="2000">2000</option>
+                                        <option value="2001">2001</option>
+                                        <option value="2002">2002</option>
+                                        <option value="2003">2003</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="gender">Gender</label>
+                                    <select id="gender" name="gender" required>
+                                        <option value="">Choose</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="employeeId">Employee ID</label>
+                                    <input type="text" id="employeeId" name="employeeId"
+                                        placeholder="Write the employee ID" required
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="education">Education</label>
+                                    <input type="text" id="education" name="education"
+                                        placeholder="Write the employee education level" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="region">Region</label>
+                                <input type="text" id="region" name="region" placeholder="Enter region" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="department">Department</label>
+                                    <select id="department" name="department" required>
+                                        <option value="">Select Department</option>
+                                        <option value="HR">HR</option>
+                                        <option value="Sales & Marketing">Sales & Marketing</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Operations">Operations</option>
+                                        <option value="Technology">Technology</option>
+                                        <option value="Procurement">Procurement</option>
+                                        <option value="R&D">R&D</option>
+                                        <option value="Analytics">Analytics</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="isPromoted">Is Promoted</label>
+                                    <select id="isPromoted" name="isPromoted" required>
+                                        <option value="">Choose</option>
+                                        <option value="0">Unpromoted</option>
+                                        <option value="1">Promoted</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="previousYearRating">Previous Year Rating</label>
+                                    <input type="text" id="previousYearRating" name="previousYearRating"
+                                        placeholder="Enter the employee's previous year rating" required step="0.01"
+                                        min="0" max="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="channel">Recruitment Channel</label>
+                                    <input type="text" id="channel" name="channel"
+                                        placeholder="Write the employee recruitment channel" required>
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="noOfTrainings">No. of Trainings</label>
+                                    <input type="text" id="noOfTrainings" name="no_of_trainings"
+                                        placeholder="Enter number of trainings" required>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="avgTrainingScore">Average Training Score</label>
+                                    <input type="text" id="avgTrainingScore" name="avgTrainingScore"
+                                        placeholder="Write the employee's average training score" required step="0.01"
+                                        min="0">
+                                </div>
+
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="lengthOfService">Length of Service (Years)</label>
+                                    <input type="text" id="lengthOfService" name="lengthOfService"
+                                        placeholder="Write the employee length of service in years" required
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="awardsWon">Awards Won</label>
+                                    <input type="text" id="awardsWon" name="awards_won"
+                                        placeholder="Enter number of awards" required>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="adminId" value="134819">
+
+                            <div class="form-buttons">
+                                <button type="button" onclick="goBack()">Back</button>
+                                <button type="button" id="submitBtn">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+    <div id="alertContainer" class="alert-container" style="display: none;">
+        <div class="alert-box">
+            <p>The new employee information has been successfully saved.</p>
+            <button class="close-btn" id="closeBtn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const submitBtn = document.getElementById('submitBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const alertContainer = document.getElementById('alertContainer');
+        const employeeForm = document.getElementById('employeeForm');
+        // Function to toggle dropdown visibility
+        function toggleDropdown() {
+            const dropdown = document.querySelector('.dropdown-menu');
+            dropdown.classList.toggle('active');
+        }
+        // Event listener to close dropdown when clicking outside
+        window.addEventListener('click', (e) => {
+            const profileIcon = document.querySelector('.profile-icon');
+            const dropdown = document.querySelector('.dropdown-menu');
+            if (!profileIcon.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+
+        const form = document.getElementById("employeeForm");
+
+        if (!document.getElementById("adminId")) {
+            const hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.id = "adminId";
+            hiddenInput.value = "134819";
+            document.body.appendChild(hiddenInput);
+        }
+
+        document.getElementById("submitBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+
+
+            const year = document.getElementById("year").value;
+            const month = document.getElementById("month").value;
+            const day = document.getElementById("day").value;
+
+
+            if (!year || !month || !day) {
+                alert("Invalid birthdate! Please select a valid year, month, and day.");
+                return;
+            }
+
+
+            const birthdate = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+            console.log("Formatted birthdate:", birthdate);
+
+
+            const data = {
+                employee_id: document.getElementById("employeeId").value,
+                first_name: document.getElementById("first_name").value,
+                last_name: document.getElementById("last_name").value,
+                region: parseInt(document.getElementById("region").value),
+                gender: document.getElementById("gender").value,
+                recruitment_channel: document.getElementById("channel").value,
+                department: document.getElementById("department").value,
+                awards_won: parseInt(document.getElementById("awardsWon").value),
+                education: document.getElementById("education").value,
+                previous_year_rating: parseFloat(document.getElementById("previousYearRating").value),
+                length_of_service: parseInt(document.getElementById("lengthOfService").value),
+                is_promoted: parseInt(document.getElementById("isPromoted").value),
+                avg_training_score: parseInt(document.getElementById("avgTrainingScore").value),
+                no_of_trainings: parseInt(document.getElementById("noOfTrainings").value),
+                adminId: parseInt(document.getElementById("adminId").value),
+                DoB: birthdate,
+                age: calculateAge(year, month, day),
+            };
+
+
+            fetch("http://127.0.0.1:8000/employees-add", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("Failed to add employee");
+                    }
+                })
+                .then(result => {
+                    console.log(result);
+
+
+                    alertContainer.style.display = 'block';
+                    document.body.classList.add('blur');
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("An error occurred while adding the employee. Please try again.");
+                });
+
+
+            if (data.age === null) {
+                alert("Invalid birthdate! Please provide a valid date.");
+                return;
+            }
+
+
+        });
+
+
+        function calculateAge(year, month, day) {
+            if (!year || !month || !day) {
+                console.error("Invalid birthdate inputs:", { year, month, day });
+                return null;
+            }
+
+            const birthDate = new Date(year, month - 1, day);
+            const today = new Date();
+
+            if (birthDate > today) {
+                alert("Birthdate cannot be in the future!");
+                return null;
+            }
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            return age > 0 ? age : null;
+        }
+        closeBtn.addEventListener('click', function () {
+            alertContainer.style.display = 'none';
+            document.body.classList.remove('blur');
+            employeeForm.reset();
+        });
+
+        function goBack() {
+            window.location.href = "/dashboard";
+        }
+            
+
+
+
+    </script>
+
+</body>
+
+</html>

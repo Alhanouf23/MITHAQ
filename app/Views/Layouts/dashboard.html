@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+</head>
+
+
+<div class="dashboard-container">
+    <header class="dashboard-header">
+        <img src="../Assets/logo.png" alt="Logo" class="logo">
+        <nav class="navbar">
+            <a href="/main" class="nav-link">Home</a>
+            <a href="/dashboard" class="nav-link active">Dashboard</a>
+            <a href="/promotionCriteria" class="nav-link">Promotion Criteria</a>
+            <a href="/reportsPage" class="nav-link">Reports</a>
+            <a href="/resultsPage" class="nav-link">Results</a>
+        </nav>
+        <div class="profile-icon" onclick="toggleDropdown()">
+            <img src="/Assets/profile-icon.png" alt="Profile">
+            <div class="dropdown-menu">
+                <a href="/profile" class="dropdown-item">
+                    <img src="/Assets/settings.png" alt="Settings">Account settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a id="logout-btn" class="dropdown-item">
+                    <img src="/Assets/logout.png" alt="Logout">Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <body>
+        <div class="dashboard-content">
+            <div class="dashboard-header-content">
+                <h1>Employee Dashboard</h1>
+                <div class="actions">
+                    <div class="search-bar">
+                        <input type="text" id="search" placeholder="Search for Employee..." oninput="filterEmployees()">
+                    </div>
+                    <a href="/newEmplyoee" class="btn add-btn">Add Employee</a>
+                </div>
+            </div>
+
+            <div class="table-container" id="tableContainer">
+                <!-- The table will appear here -->
+            </div>
+        </div>
+
+        <!-- Edit Popup  -->
+        <div id="overlay" class="overlay"></div>
+        <div id="editPopup" class="popup">
+            <h2>Edit Employee</h2>
+            <form id="editForm"></form>
+            <div>
+                <button class="btn confirm-btn" onclick="saveChanges()">Save</button>
+                <button class="btn cancel-btn" onclick="closePopup()">Cancel</button>
+            </div>
+        </div>
+</div>
+<style>
+    /* Global styles */
+    * {
+        margin: 0%;
+        padding: 0%;
+        box-sizing: border-box;
+    }
+
+    body {
+        padding: 0;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #E3F2FD;
+        width: 100%;
+        height: 100%;
+    }
+
+    .dashboard-container {
+        width: 100%;
+        margin: auto;
+        overflow: hidden;
+
+    }
+
+    /* Header */
+    .dashboard-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #ffffff;
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .nav-link {
+        text-decoration: none;
+        color: #444;
+        font-weight: bold;
+        padding: 5px 15px;
+        border-radius: 50px;
+    }
+
+    .nav-link.active {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .profile-icon img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    /* Content */
+    .dashboard-content {
+        width: auto;
+        margin: 0;
+        padding: 16px;
+
+    }
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .search-bar input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 50px;
+        width: 250px;
+    }
+
+    .add-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+    }
+
+
+    /* Styling for table */
+    .table-container {
+        width: 100%;
+        overflow-x: auto;
+        margin: 20px auto;
+    }
+
+    .row {
+        display: flex;
+        width: 2000px;
+        background-color: white;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        align-items: center;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .row div {
+        flex: 1;
+        padding: 6px;
+        text-align: center;
+        word-wrap: break-word;
+        flex: 1;
+        width: auto;
+    }
+
+    .row.header {
+        font-weight: bold;
+        color: rgb(104, 104, 104);
+        overflow-wrap: break-word;
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    .row:nth-child(even) {
+        opacity: 0.8;
+    }
+
+    .row:nth-child(odd) {
+        opacity: 0.5;
+    }
+
+
+    /* Promoted column*/
+    .promoted {
+        background-color: #e8fcef;
+        color: #4caf50;
+        text-align: center;
+        padding: 5px 10px;
+        border-radius: 20px;
+        width: fit-content;
+        margin: auto;
+
+    }
+
+    .not-promoted {
+        background-color: #fde8e8;
+        color: #f75c51;
+        text-align: center;
+        padding: 5px 10px;
+        border-radius: 20px;
+        width: fit-content;
+        margin: auto;
+        font-size: 14px;
+    }
+
+    .Mange-icons {
+        display: flex;
+        cursor: pointer;
+    }
+
+    .edit-icon img {
+        width: 20px;
+        height: 20px;
+        margin-top: 4px;
+    }
+
+    .delete-icon img {
+        width: 25px;
+        height: 25px;
+    }
+
+    /* Popup Styling */
+    .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        text-align: center;
+        width: 400px;
+        max-width: 90%;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    .popup.active {
+        display: block;
+    }
+
+    .popup h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .popup form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .popup form label {
+        font-size: 14px;
+        text-align: right;
+        padding-right: 10px;
+        align-self: center;
+    }
+
+    .popup form input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    input[readonly] {
+        background-color: #f0f0f0;
+        color: #555;
+        /* Text color */
+        cursor: not-allowed;
+        /* Change cursor to indicate it's not editable */
+        border: 1px solid #ccc;
+        /* Optional border */
+    }
+
+    .popup .btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .popup .confirm-btn {
+        background-color: #007bff;
+        color: white;
+        margin-right: 10px;
+        border-radius: 12px;
+
+    }
+
+    .popup .cancel-btn {
+        background-color: #007bff;
+        color: white;
+        border-radius: 12px;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .overlay.active {
+        display: block;
+    }
+
+    /* Alert confirmations */
+    .confirmation-box {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #ffffff;
+        border: 2px solid white;
+        padding: 20px;
+        border-radius: 24px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 300px;
+        z-index: 1000;
+        margin-top: 60px;
+    }
+
+    .confirmation-box-message {
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: gray;
+    }
+
+    .confirmation-box-button {
+        flex: 1;
+        padding: 12px;
+        font-size: 16px;
+        font-family: 'Poppins', sans-serif;
+        color: #fff;
+        background-color: #4285f4;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .confirmation-box-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .confirmation-box-button.cancel {
+        background-color: #4285f4;
+    }
+
+
+    .readonly-field {
+        color: gray;
+        background-color: #f0f0f0;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 4px;
+        font-size: 14px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    .profile-icon {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .profile-icon img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 180px;
+        z-index: 1000;
+    }
+
+    .dropdown-menu.active {
+        display: block;
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: #444;
+        transition: background-color 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .dropdown-item img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background-color: #ddd;
+        margin: 5px 0;
+    }
+
+    .alert-content-Error {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+    }
+
+    .alert-content-Error {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
+    }
+
+    .alert-image {
+        margin: 15px;
+        object-fit: contain;
+    }
+
+    /*End of Styling Dashboard Employee page*/
+</style>
+<script>
+
+    let employees = []; // list of employees
+    let selectedEmployeeIndex = null; // To identify the current employee
+
+    // A function to fetch data from the server
+    async function fetchEmployees() {
+        try {
+            //Make sure the link is correct
+            const response = await fetch("http://127.0.0.1:8000/employees");
+
+            // Check the response 
+            if (!response.ok) {
+                throw new Error(`Failed to fetch employees. HTTP status: ${response.status}`);
+            }
+
+            // Fetch the data and convert it to JSON
+            employees = await response.json();
+
+            // Check the data content
+            if (!Array.isArray(employees)) {
+                throw new Error("Invalid data format: Expected an array.");
+            }
+
+            console.log("Fetched employees:", employees);   // Display data in the console
+            renderTable(employees);                         // Display the table
+        } catch (error) {
+            console.error("Error in fetchEmployees:", error);
+            document.getElementById("tableContainer").innerHTML = `
+            <p style="color: red; text-align: center;">Failed to load employees. Please try again later.</p>
+        `;
+        }
+    }
+
+    document.getElementById("tableContainer").innerHTML = "Loading...";
+
+    // A function to display the table
+    function renderTable(data) {
+        const tableContainer = document.getElementById("tableContainer");
+        tableContainer.innerHTML = `
+        <div class="row header">
+            <div>ID</div>
+            <div>Name</div>
+            <div>Department</div>
+            <div>Education</div>
+            <div>Avg Training Score</div>
+            <div>Length of Service</div>
+            <div>Previous Year Rating</div>
+            <div>Region</div>
+            <div>Gender</div>
+            <div>Recruitment Channel</div>
+            <div>No. of Trainings</div>
+            <div>Age</div>
+            <div>Awards Won</div>
+            <div>Promoted</div>
+            <div>Actions</div> 
+        </div>
+    `;
+
+        data.forEach((emp, index) => {
+            const promotionClass = emp.is_promoted ? "promoted" : "not-promoted";
+            const fullName = emp.first_name + " " + emp.last_name;
+            const row = `
+            <div class="row">
+                <div>${emp.id || 'N/A'}</div>
+                <div>${fullName}</div>
+                <div>${emp.department || 'Unknown'}</div>
+                <div>${emp.education || 'Unknown'}</div>
+                <div>${emp.avg_training_score || 0}</div>
+                <div>${emp.length_of_service || 0}</div>
+                <div>${emp.previous_year_rating || 0}</div>
+                <div>${emp.region || 0}</div>
+                <div>${emp.gender || 'Unknown'}</div>
+                <div>${emp.recruitment_channel || 'Unknown'}</div>
+                <div>${emp.no_of_trainings || 0}</div>
+                <div>${emp.age || 0}</div>
+                <div>${emp.awards_won || 0}</div>
+                <div class="${promotionClass}">${emp.is_promoted ? 'Promoted' : 'Not Promoted'}</div>
+                <div class="Mange-icons">
+                    <div class="edit-icon">
+                        <img src="../Assets/Edit.png" alt="Edit" onclick="openEditPopup(${index})">
+                    </div>
+                    <div class="delete-icon">
+                        <img src="../Assets/delete.png" alt="Delete" onclick="deleteEmployee(${index})">
+                    </div>
+                </div>
+            </div>
+        `;
+            tableContainer.innerHTML += row;
+        });
+    }
+
+    function openEditPopup(index) {
+        selectedEmployeeIndex = index;
+        const emp = employees[index]; // get employee data
+
+        const form = document.getElementById("editForm");
+        form.innerHTML = ""; // Dump the current form
+
+        // Create input fields based on employee data
+        Object.entries(emp).forEach(([key, value]) => {
+            const label = document.createElement("label");
+            label.textContent = key;
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.name = key === "id" ? "employee_id" : key;
+            input.value = value || "";
+
+            if (key === "id") {
+                input.readOnly = true;
+            }
+
+            form.appendChild(label);
+            form.appendChild(input);
+        });
+
+        // Display the popup
+        document.getElementById("overlay").classList.add("active");
+        document.getElementById("editPopup").classList.add("active");
+    }
+
+
+    async function saveChanges() {
+        const form = document.getElementById("editForm");
+        const updatedEmployee = {};
+
+        let hasNegativeValue = false; // Flag to check for negative values
+
+        // Collect form data and validate
+        form.querySelectorAll("input").forEach(input => {
+            if (input.name) {
+                if (["age", "avg_training_score", "length_of_service", "previous_year_rating", "region", "no_of_trainings", "awards_won", "is_promoted"].includes(input.name)) {
+                    const value = parseFloat(input.value) || 0;
+
+                    if (value < 0) {
+                        hasNegativeValue = true; // Mark as invalid
+                    }
+
+                    updatedEmployee[input.name] = value;
+                } else {
+                    updatedEmployee[input.name] = input.value;
+                }
+            }
+        });
+
+        // If there is a negative value, show an error popup and stop execution
+        if (hasNegativeValue) {
+            showError("Negative values are not allowed. Please correct the input.", "error");
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/employees/${updatedEmployee.employee_id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(updatedEmployee),
+            });
+
+            if (response.ok) {
+                showSuccess("Employee updated successfully!", "success");
+                closePopup();
+                fetchEmployees();
+            } else {
+                const errorData = await response.json();
+                showError(`Failed to update employee: ${JSON.stringify(errorData.detail)}`, "error");
+            }
+        } catch (error) {
+            console.error("Error updating employee:", error);
+            showError(`An unexpected error occurred: ${error.message}`, "error");
+        }
+    }
+
+    // Function to display a success popup with an image
+    function showSuccess(message) {
+        const overlay = document.getElementById("overlay");
+        const successBox = document.createElement("div");
+        successBox.classList.add("confirmation-box");
+
+        // Success Popup content
+        successBox.innerHTML = `
+        <div class="alert-content">
+            <img src="../Assets/popUpSave.png" alt="success" class="alert-image">
+            <p class="confirmation-box-message">${message}</p>
+        </div>
+        <div class="confirmation-box-buttons">
+            <button class="confirmation-box-button" onclick="closeAlert()">Close</button>
+        </div>
+    `;
+
+        // Display the success Popup
+        document.body.appendChild(successBox);
+        overlay.classList.add("active");
+
+        // Function to close the Popup
+        window.closeAlert = () => {
+            document.body.removeChild(successBox);
+            overlay.classList.remove("active");
+        };
+    }
+
+
+    // Function to display a Error popup with an image
+    function showError(message) {
+        const overlay = document.getElementById("overlay");
+        const errorBox = document.createElement("div");
+        errorBox.classList.add("confirmation-box");
+
+        // Error Popup content
+        errorBox.innerHTML = `
+        <div class="alert-content">
+            <img src="../Assets/popUpError.png" alt="error" class="alert-content-Error">
+            <p class="confirmation-box-message">${message}</p>
+        </div>
+        <div class="confirmation-box-buttons">
+            <button class="confirmation-box-button" onclick="closeAlert()">Close</button>
+        </div>
+    `;
+
+        // Display the error Popup
+        document.body.appendChild(errorBox);
+        overlay.classList.add("active");
+
+        // Function to close the Popup
+        window.closeAlert = () => {
+            document.body.removeChild(errorBox);
+            overlay.classList.remove("active");
+        };
+    }
+
+    // Function to delete an employee
+    async function deleteEmployee(index) {
+        const employeeId = employees[index].id;
+
+        if (confirm("Are you sure you want to delete this employee?")) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/employees/${employeeId}`, {
+                    method: "DELETE",
+                });
+
+                if (response.ok) {
+                    showSuccess("Employee deleted successfully!"); // Show success popup
+                    await fetchEmployees(); // Refresh the table
+                } else {
+                    const errorData = await response.json();
+                    alert(`Failed to delete employee: ${errorData.detail}`);
+                }
+            } catch (error) {
+                console.error("Error deleting employee:", error);
+            }
+        }
+    }
+    //Function to close the pop-up window
+    function closePopup() {
+        document.getElementById("overlay").classList.remove("active");
+        document.getElementById("editPopup").classList.remove("active");
+    }
+
+    // Function to search for an employee
+    function filterEmployees() {
+        const searchInput = document.getElementById("search").value.toLowerCase();
+        const rows = document.querySelectorAll(".table-container .row:not(.header)");
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll("div");
+            let rowContainsSearch = false;
+
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(searchInput)) {
+                    rowContainsSearch = true;
+                }
+            });
+
+            row.style.display = rowContainsSearch ? "" : "none";
+        });
+    }
+
+    // Function to toggle the dropdown menu visibility
+    // This function adds or removes the "active" class to display or hide the menu.
+    function toggleDropdown() {
+        const dropdown = document.querySelector('.dropdown-menu'); // Select the dropdown menu element
+        dropdown.classList.toggle('active'); // Toggle the "active" class to show/hide the menu
+    }
+
+    // Event listener to close the dropdown menu if the user clicks outside of it
+    window.addEventListener('click', (e) => {
+        const profileIcon = document.querySelector('.profile-icon'); // Select the profile icon container
+        const dropdown = document.querySelector('.dropdown-menu'); // Select the dropdown menu element
+
+        // Check if the click event happened outside of the profile icon
+        if (!profileIcon.contains(e.target)) {
+            dropdown.classList.remove('active'); // Hide the dropdown menu
+        }
+    });
+
+    // Handle logout functionality
+    // This ensures that the logout button is functional after the page fully loads
+    document.addEventListener("DOMContentLoaded", function () {
+        const logoutButton = document.getElementById("logout-btn"); // Select the logout button
+
+        // Check if the logout button exists on the page
+        if (logoutButton) {
+            logoutButton.addEventListener("click", function (e) {
+                e.preventDefault(); // Prevent the default behavior of the anchor tag (if used in a link)
+
+                // Display a confirmation dialog before logging out
+                if (confirm("Are you sure you want to logout?")) {
+                    // Send a logout request to the backend API
+                    fetch("http://127.0.0.1:8000/logout", { // Replace with actual backend URL
+                        method: "POST", // Use POST method for logout action
+                        headers: {
+                            "Content-Type": "application/json", // Set the request content type to JSON
+                        },
+                    })
+                        .then(response => {
+                            // Check if the logout request was successful
+                            if (response.ok) {
+                                window.location.href = "/"; // Redirect to the home page after successful logout
+                            } else {
+                                alert("Failed to logout. Please try again."); // Show an alert if logout fails
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error during logout:", error); // Log the error in the console
+                            alert("An error occurred during logout. Please try again."); // Show an error message
+                        });
+                }
+            });
+        } else {
+            console.error("Logout button not found on this page."); // Log an error if the button is missing
+        }
+    });
+
+    // Run functions when the page loads
+    document.addEventListener("DOMContentLoaded", fetchEmployees);
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+
+    <script>
+        // Function to toggle the visibility of the dropdown menu
+        function toggleDropdown() {
+            // Select the dropdown menu element
+            const dropdown = document.querySelector('.dropdown-menu');
+            // Toggle the 'active' class on the dropdown menu to show or hide it
+            dropdown.classList.toggle('active');
+        }
+
+        // Event listener to close the dropdown menu if a click occurs outside the profile icon
+        window.addEventListener('click', (e) => {
+            // Select the profile icon and the dropdown menu elements
+            const profileIcon = document.querySelector('.profile-icon');
+            const dropdown = document.querySelector('.dropdown-menu');
+            // If the click is not inside the profile icon, remove the 'active' class to hide the dropdown menu
+            if (!profileIcon.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+
+        // Logout Function 
+
+        // Wait for the document to be fully loaded before executing the script
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select the logout button by its ID
+            const logoutButton = document.getElementById("logout-btn");
+            // Check if the logout button exists on the page
+            if (logoutButton) {
+                // Add a click event listener to the logout button
+                logoutButton.addEventListener("click", function (e) {
+                    e.preventDefault(); // Prevent the default action of the button (like a form submission)
+                    // Ask the user for confirmation before logging out
+                    if (confirm("Are you sure you want to logout?")) {
+                        // Send a POST request to the server to log out
+                        fetch("http://127.0.0.1:8000/logout", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json", // Set the content type to JSON
+                            },
+                        })
+                            .then(response => {
+                                // If the logout request is successful, redirect to the homepage
+                                if (response.ok) {
+                                    window.location.href = "/";
+                                } else {
+                                    // If logout fails, show an alert
+                                    alert("Failed to logout. Please try again.");
+                                }
+                            })
+                            .catch(error => {
+                                // Log any errors that occur during the fetch operation
+                                console.error("Error during logout:", error);
+                                // Show an alert if there's an error during logout
+                                alert("An error occurred during logout. Please try again.");
+                            });
+                    }
+                });
+            } else {
+                // Log an error if the logout button is not found on the page
+                console.error("Logout button not found on this page.");
+            }
+        });
+
+
+
+        // Function to show alert pop-up (Success Alert)
+        function showAlert(message) {
+            const overlay = document.getElementById("overlay");
+            const alertBox = document.createElement("div");
+            alertBox.classList.add("confirmation-box");
+
+            // Alert message with an image and Close button
+            alertBox.innerHTML = `
+                <div class="alert-content">
+                    <img src="/Assets/popUpSave.png" alt="Success" class="alert-image">
+                    <p class="confirmation-box-message">${message}</p>
+                </div>
+                <div class="confirmation-box-buttons">
+                    <button class="confirmation-box-button" onclick="closeAlert()">Close</button>
+                </div>
+            `;
+
+            // Append alert box to the body and show overlay
+            document.body.appendChild(alertBox);
+            overlay.classList.add("active");
+            alertBox.classList.add("active");
+
+            // Function to close the alert
+            window.closeAlert = () => {
+                document.body.removeChild(alertBox);
+                overlay.classList.remove("active");
+                alertBox.classList.remove("active");
+            };
+        }
+
+        // Function to show alert pop-up (Failed Alert)
+        function showFailedAlert(message) {
+            const overlay = document.getElementById("overlay");
+            const alertBox = document.createElement("div");
+            alertBox.classList.add("confirmation-box");
+
+            // Alert message with an image and Close button
+            alertBox.innerHTML = `
+                <div class="alert-content">
+                    <img src="/Assets/popUpError.png" alt="Success" class="alert-image-failed">
+                    <p class="confirmation-box-message">${message}</p>
+                </div>
+                <div class="confirmation-box-buttons">
+                    <button class="confirmation-box-button" onclick="closeAlert()">Close</button>
+                </div>
+            `;
+
+            // Append alert box to the body and show overlay
+            document.body.appendChild(alertBox);
+            overlay.classList.add("active");
+            alertBox.classList.add("active");
+
+            // Function to close the alert
+            window.closeAlert = () => {
+                document.body.removeChild(alertBox);
+                overlay.classList.remove("active");
+                alertBox.classList.remove("active");
+            };
+        }
+
+        // Function to fetch the admin profile data from the API
+        async function fetchAdminProfile() {
+            try {
+                // Fetch admin data from the API
+                const response = await fetch("http://127.0.0.1:8000/profile/data");
+                if (!response.ok) {
+                    // If the response is not okay, throw an error
+                    throw new Error("Failed to fetch admin data");
+                }
+
+                // Parse the JSON response
+                const admin = await response.json();
+
+                // Automatically update the page data (name and ID only)
+                document.querySelector(".profile-container h2").innerText = admin.full_name;
+                document.querySelector(".profile-container p").innerText = `ID: ${admin.admin_id}`;
+
+            } catch (error) {
+                // Log any errors that occur during the fetch operation
+                console.error("Error fetching admin data:", error);
+            }
+        }
+
+        // Run the fetchAdminProfile function when the page loads
+        window.onload = fetchAdminProfile;
+
+        // Function to update admin profile all fields
+        async function saveProfileChanges() {
+            console.log("saveProfileChanges() executed!");
+
+            // Get the input values for each field and trim any extra spaces
+            const fullName = document.getElementById("fullName").value.trim();
+            const dob = document.getElementById("dob").value.trim();
+            const region = document.getElementById("region").value.trim();
+            const gender = document.getElementById("gender").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const department = document.getElementById("department").value.trim();
+
+            // Create an object to hold the profile data
+            const profileData = {
+                full_name: fullName,
+                birth_date: dob,
+                region: region,
+                gender: gender,
+                phone_number: phone,
+                department: department
+            };
+
+            console.log("Sending Data:", profileData); // Log the data being sent
+
+            try {
+                // Send the data to the server via a POST request
+                const response = await fetch("http://127.0.0.1:8000/editProfile", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" // Set content type to JSON
+                    },
+                    body: JSON.stringify(profileData) // Send the profile data as JSON
+                });
+
+                // Parse the response from the server
+                const data = await response.json();
+                console.log("Response:", data); // Log the response data
+
+                // Check if the response was successful
+                if (response.ok) {
+                    showAlert("Your changes have been saved!"); // Show success alert
+                } else {
+                    showFailedAlert("Error: " + data.detail); // Show failure alert with error message
+                }
+            } catch (error) {
+                // Show failure alert if the fetch request fails
+                showFailedAlert("Failed to save changes. Please try again later.");
+                console.error("Error:", error); // Log any errors that occur
+            }
+        }
+
+
+        // Function to update only name field on database
+        async function updateAdminName() {
+            console.log("updateAdminName() executed!");
+
+            // Get the value of the full name input and remove any extra spaces
+            const fullName = document.getElementById("fullName").value.trim();
+
+            //  Prevent sending an empty name
+            if (!fullName) {
+                // Show an alert if the name is empty
+                showFailedAlert("Name cannot be empty!");
+                return;
+            }
+
+            // Create an object to hold the name data
+            const nameData = { full_name: fullName };
+
+            console.log("Sending Data:", nameData);
+
+            try {
+                // Send the name data to the server via a POST request
+                const response = await fetch("http://127.0.0.1:8000/editName", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" // Set content type to JSON
+                    },
+                    body: JSON.stringify(nameData) // Send the name data as JSON
+                });
+
+                // Parse the response from the server
+                const data = await response.json();
+                console.log("Response:", data);
+
+                // Check if the response was successful
+                if (response.ok) {
+                    // Show success alert if the name was updated successfully
+                    showAlert("Your name has been updated successfully!");
+                } else {
+                    // Show failure alert with error message if the update failed
+                    showFailedAlert("Error: " + data.detail);
+                }
+            } catch (error) {
+                // Show failure alert if there was an error with the fetch request
+                showFailedAlert("Failed to update name. Please try again later.");
+                console.error("Error:", error); // Log any errors that occur
+            }
+        }
+
+
+
+
+        // Function to update only birth date on database
+        async function updateAdminBirthDate() {
+            console.log("updateAdminBirthDate() executed!");
+
+            // Get the value of the birth date input and remove any extra spaces
+            const birthDate = document.getElementById("dob").value.trim();
+
+            // If the birth date is empty, show an alert and stop the execution
+            if (!birthDate) {
+                showFailedAlert("Birth date cannot be empty!");
+                return;
+            }
+
+            // Check that the birth date corresponds to an age of at least 18 years
+            const birthDateObj = new Date(birthDate);
+            const minBirthDate = new Date();
+            minBirthDate.setFullYear(minBirthDate.getFullYear() - 18);
+
+            // If the birth date is less than 18 years ago, show an alert and stop the execution
+            if (birthDateObj > minBirthDate) {
+                showFailedAlert("Birth date must be at least 18 years ago.");
+                return;
+            }
+
+            // Create an object to hold the birth date data
+            const birthData = { birth_date: birthDate };
+
+            console.log("Sending Data:", birthData);
+
+            try {
+                // Send the birth date data to the server via a POST request
+                const response = await fetch("http://127.0.0.1:8000/editBirthDate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" // Set content type to JSON
+                    },
+                    body: JSON.stringify(birthData) // Send the birth date data as JSON
+                });
+
+                // Parse the response from the server
+                const data = await response.json();
+                console.log("Response:", data);
+
+                // Check if the response was successful
+                if (response.ok) {
+                    // Show success alert if the birth date was updated successfully
+                    showAlert("Your birth date has been updated successfully!");
+                } else {
+                    // Show failure alert with error message if the update failed
+                    showFailedAlert("Error: " + data.detail);
+                }
+            } catch (error) {
+                // Show failure alert if there was an error with the fetch request
+                showFailedAlert("Failed to update birth date. Please try again later.");
+                console.error("Error:", error); // Log any errors that occur
+            }
+        }
+
+
+
+        // Function to update only region field in the database
+        async function updateAdminRegion() {
+            console.log("updateAdminRegion() executed!");
+
+            // Get the value of the region input and remove any extra spaces
+            const region = document.getElementById("region").value.trim();
+
+            // If the region is empty, show an alert and stop the execution
+            if (!region) {
+                showFailedAlert("Region cannot be empty!");
+                return;
+            }
+
+            // Create an object to hold the region data
+            const regionData = { region: region };
+
+            console.log("Sending Data:", regionData);
+
+            try {
+                // Send the region data to the server via a POST request
+                const response = await fetch("http://127.0.0.1:8000/editRegion", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" // Set content type to JSON
+                    },
+                    body: JSON.stringify(regionData) // Send the region data as JSON
+                });
+
+                // Parse the response from the server
+                const data = await response.json();
+                console.log("Response:", data);
+
+                // Check if the response was successful
+                if (response.ok) {
+                    // Show success alert if the region was updated successfully
+                    showAlert("Your region has been updated successfully!");
+                } else {
+                    // Show failure alert with error message if the update failed
+                    showFailedAlert("Error: " + data.detail);
+                }
+            } catch (error) {
+                // Show failure alert if there was an error with the fetch request
+                showFailedAlert("Failed to update region. Please try again later.");
+                console.error("Error:", error); // Log any errors that occur
+            }
+        }
+
+
+
+        // Function to update only gender field in the database
+        async function updateAdminGender() {
+            console.log("updateAdminGender() executed!");
+
+            // Get the value of the gender input and remove any extra spaces
+            const gender = document.getElementById("gender").value.trim();
+
+            // If the gender is empty, show an alert and stop the execution
+            if (!gender) {
+                showFailedAlert("Gender cannot be empty!");
+                return;
+            }
+
+            // Create an object to hold the gender data
+            const genderData = { gender: gender };
+
+            console.log("Sending Data:", genderData);
+
+            try {
+                // Send the gender data to the server via a POST request
+                const response = await fetch("http://127.0.0.1:8000/editGender", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" // Set content type to JSON
+                    },
+                    body: JSON.stringify(genderData) // Send the gender data as JSON
+                });
+
+                // Parse the response from the server
+                const data = await response.json();
+                console.log("Response:", data);
+
+                // Check if the response was successful
+                if (response.ok) {
+                    // Show success alert if the gender was updated successfully
+                    showAlert("Your gender has been updated successfully!");
+                } else {
+                    // Show failure alert with error message if the update failed
+                    showFailedAlert("Error: " + data.detail);
+                }
+            } catch (error) {
+                // Show failure alert if there was an error with the fetch request
+                showFailedAlert("Failed to update gender. Please try again later.");
+                console.error("Error:", error); // Log any errors that occur
+            }
+        }
+
+
+
+        // Function to update only phone number field in the database
+        async function updateAdminPhoneNumber() {
+            console.log("updateAdminPhoneNumber() executed!");
+
+            // Get the value of the phone number input and remove any extra spaces
+            const phoneNumber = document.getElementById("phone").value.trim();
+
+            // If the phone number is empty, show an alert and stop the execution
+            if (!phoneNumber) {
+                showFailedAlert("Phone number cannot be empty!");
+                return;
+            }
+
+            // Create an object to hold the phone number data
+            const phoneData = { phone_number: phoneNumber };
+
+            console.log("Sending Data:", phoneData);
+
+            try {
+                // Send the phone number data to the server via a POST request
+                const response = await fetch("http://127.0.0.1:8000/editPhoneNumber", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" // Set content type to JSON
+                    },
+                    body: JSON.stringify(phoneData) // Send the phone number data as JSON
+                });
+
+                // Parse the response from the server
+                const data = await response.json();
+                console.log("Response:", data);
+
+                // Check if the response was successful
+                if (response.ok) {
+                    // Show success alert if the phone number was updated successfully
+                    showAlert("Your phone number has been updated successfully!");
+                } else {
+                    // Show failure alert with error message if the update failed
+                    showFailedAlert("Error: " + data.detail);
+                }
+            } catch (error) {
+                // Show failure alert if there was an error with the fetch request
+                showFailedAlert("Failed to update phone number. Please try again later.");
+                console.error("Error:", error); // Log any errors that occur
+            }
+        }
+
+
+
+        // Function to update only department field in the database
+        async function updateAdminDepartment() {
+            console.log("updateAdminDepartment() executed!");
+
+            // Get the value of the department input and remove any extra spaces
+            const department = document.getElementById("department").value.trim();
+
+            // If the department is empty, show an alert and stop the execution
+            if (!department) {
+                showFailedAlert("Department cannot be empty!");
+                return;
+            }
+
+            // Create an object to hold the department data
+            const departmentData = { department: department };
+
+            console.log("Sending Data:", departmentData);
+
+            try {
+                // Send the department data to the server via a POST request
+                const response = await fetch("http://127.0.0.1:8000/editDepartment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json" // Set content type to JSON
+                    },
+                    body: JSON.stringify(departmentData) // Send the department data as JSON
+                });
+
+                // Parse the response from the server
+                const data = await response.json();
+                console.log("Response:", data);
+
+                // Check if the response was successful
+                if (response.ok) {
+                    // Show success alert if the department was updated successfully
+                    showAlert("Your department has been updated successfully!");
+                } else {
+                    // Show failure alert with error message if the update failed
+                    showFailedAlert("Error: " + data.detail);
+                }
+            } catch (error) {
+                // Show failure alert if there was an error with the fetch request
+                showFailedAlert("Failed to update department. Please try again later.");
+                console.error("Error:", error); // Log any errors that occur
+            }
+        }
+
+    </script>
+
+    <style>
+        /* Reset default margins, paddings, and set box-sizing to border-box for consistent element sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Styles of the main body */
+        body {
+            background-color: #E3F2FD;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header container with shadow and bottom border */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Logo styles */
+        .logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        .navbar {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Navigation bar styles */
+        .nav-link {
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Navigation link styles */
+        .nav-link:hover {
+            background-color: #f1f1f1;
+            color: #007bff;
+        }
+
+        /* Hover effect for navigation links */
+        .nav-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Active navigation link */
+        .profile-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* End of header styles */
+
+
+        /* Profile icon image */
+        .profile-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+
+        /* Menu Section */
+
+        /* Profile icon container */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 180px;
+            z-index: 1000;
+        }
+
+        /* Show dropdown menu when active */
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        /* Dropdown item styles */
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #444;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+
+        .dropdown-item img {
+            width: 20px;
+            height: 20px;
+        }
+
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
+        }
+
+        /* ========== Main Container Layout ========== */
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            gap: 40px;
+        }
+
+        /* Profile Sidebar */
+        .profile-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 190px;
+            text-align: center;
+            height: 448px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 45px;
+        }
+
+        /*  Styles the profile picture inside the profile container */
+        .profile-container img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        /* Styles the profile name (h2 heading) */
+        .profile-container h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        /* 
+   - Styles the profile description (paragraph)*/
+        .profile-container p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /*  Styles the profile menu links*/
+        .profile-container a {
+            display: block;
+            font-size: 14px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Styles the "Change Password" link */
+        .profile-container a.change-password {
+            color: #aaa;
+        }
+
+        .profile-container a.personal-info {
+            color: #333;
+        }
+
+        /* ========== Edit Button ========== */
+
+        .edit-btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Information Section */
+        .info-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+
+        /* Styles the section title (h1)*/
+        .info-section h1 {
+            font-size: 24px;
+            margin: 0;
+            color: #333;
+        }
+
+
+        /* ========== Info Boxes (User Details) ========== */
+        .info-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            background-color: #C2E3FB;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            width: 600px;
+        }
+
+
+        /* Styles individual information boxes inside the grid */
+        .info-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+
+        /* Styles the heading inside each info box*/
+        .info-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* Styles the text inside each info box */
+        .info-box input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        /* Start of Info Box Input Focus Styles */
+        .info-box input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        /* End of Info Box Input Focus Styles */
+
+        /* Start of Select Styles */
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        /* End of Select Styles */
+
+
+        /* End of Edit Icon Styles */
+
+        /* Start of Popup Styles */
+        .edit-icon {
+            width: 22px;
+            height: 22px;
+            margin-left: 10px;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
+        /* Popup Styles */
+        .confirmation-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+            display: none;
+            z-index: 1001;
+        }
+
+        .confirmation-box.active {
+            display: block;
+        }
+
+        .alert-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-image {
+            width: 50px;
+            height: 50px;
+        }
+
+        .alert-image-failed {
+            width: 70px;
+            height: 50px;
+        }
+
+        .confirmation-box-message {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .confirmation-box-buttons {
+            text-align: center;
+        }
+
+        .confirmation-box-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .confirmation-box-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* End of Popup Styles */
+
+        /* Overlay */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+        }
+
+        #overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Overlay for alert -->
+    <div id="overlay"></div>
+
+    <!-- Header Section -->
+    <header class="main-header">
+        <img src="/Assets/logo.png" alt="Logo" class="logo">
+        <nav class="navbar">
+            <a href="/main" class="nav-link active">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/promotionCriteria" class="nav-link">Promotion Criteria</a>
+            <a href="/reportsPage" class="nav-link">Reports</a>
+            <a href="/resultsPage" class="nav-link">Results</a>
+        </nav>
+        <div class="profile-icon" onclick="toggleDropdown()">
+            <img src="/Assets/profile-icon.png" alt="Profile">
+            <div class="dropdown-menu">
+                <a href="/profile" class="dropdown-item">
+                    <img src="/Assets/settings.png" alt="Settings">Account settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a id="logout-btn" class="dropdown-item">
+                    <img src="/Assets/logout.png" alt="Logout">Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Profile Sidebar -->
+        <div class="profile-container">
+            <img id="main-image" src="/Assets/profile-img.png" alt="Profile Picture">
+            <h2>Loading...</h2>
+            <p>ID: Loading...</p>
+            <div class="profile-options">
+                <a href="/profile" class="personal-info">Personal Information</a>
+                <a href="/editPassword" class="change-password">Change Password</a>
+                <button class="edit-btn" onclick="saveProfileChanges()">Save All</button>
+            </div>
+        </div>
+
+        <!-- Information Section -->
+        <div>
+            <div class="info-section">
+                <h1>Personal Information</h1>
+            </div>
+            <div class="info-container">
+                <div class="info-box">
+                    <h3>Full Name <img src="/Assets/saveChange.png" alt="Edit Icon" class="edit-icon"
+                            onclick="updateAdminName()"></h3>
+                    <input type="text" id="fullName" placeholder="Enter full name">
+                </div>
+                <div class="info-box">
+                    <h3>Date of Birth <img src="/Assets/saveChange.png" alt="Edit Icon" class="edit-icon"
+                            onclick="updateAdminBirthDate()"></h3>
+                    <input type="date" id="dob" placeholder="Enter date of birth">
+                </div>
+                <div class="info-box">
+                    <h3>Region <img src="/Assets/saveChange.png" alt="Edit Icon" class="edit-icon"
+                            onclick="updateAdminRegion()"></h3>
+                    <select id="region">
+                        <option>-- Select Region --</option>
+                        <option>New York</option>
+                        <option>Austin</option>
+                        <option>Chicago</option>
+                        <option>Los Angeles</option>
+                        <option>Fresno</option>
+                    </select>
+                </div>
+                <div class="info-box">
+                    <h3>Gender <img src="/Assets/saveChange.png" alt="Edit Icon" class="edit-icon"
+                            onclick="updateAdminGender()"></h3>
+                    <select id="gender">
+                        <option>-- Select Gender --</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+                <div class="info-box">
+                    <h3>Phone Number <img src="/Assets/saveChange.png" alt="Edit Icon" class="edit-icon"
+                            onclick="updateAdminPhoneNumber()"></h3>
+                    <input type="text" id="phone" placeholder="Enter phone number">
+                </div>
+                <div class="info-box">
+                    <h3>Department <img src="/Assets/saveChange.png" alt="Edit Icon" class="edit-icon"
+                            onclick="updateAdminDepartment()"></h3>
+                    <select id="department">
+                        <option>-- Select Department --</option>
+                        <option>Human Resource</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

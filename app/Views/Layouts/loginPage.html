@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* start of login page styles*/
+        .login-body {
+            display: flex;
+            background-color: #E3F2FD;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            margin: 0;
+        }
+
+        /* Main container for the login form */
+        .login-form-container {
+            display: flex;
+            flex-direction: column;
+            width: 500px;
+            height: 350px;
+            margin: auto;
+            background: rgba(66, 133, 244, 0.1);
+            box-shadow: 0px -5px 0px 0px rgba(200, 197, 197, 0.5);
+            border-radius: 25px;
+            padding: 30px;
+            margin-top: 100px;
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Styling for the logo inside the login form */
+        .login-logo {
+            position: absolute;
+            right: -10px;
+            top: -8px;
+            width: 200px;
+        }
+
+        /* Styling the form box inside the login container */
+        .login-form-container.form-box-login {
+            width: 100%;
+            padding: 40px;
+        }
+
+        /* Styling for secondary heading (H3) */
+        .loginh3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 22px;
+            color: black;
+            text-align: left;
+        }
+
+        /* Styling for main heading (H2) */
+        .loginh2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            color: gray;
+            text-align: left;
+            margin-top: -20px;
+
+        }
+
+        /* Input field container styling */
+        .login-input {
+            margin-bottom: 20px;
+            position: relative;
+            text-align: left;
+            flex-direction: column;
+            display: flex;
+        }
+
+        /* Styling for input labels */
+        .login-input-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            margin-bottom: 5px;
+            display: block;
+            color: black;
+            font-weight: bold;
+        }
+
+        /* Input field styling */
+        .login-input-field {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #4285f4;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        /* Styling for the submit button */
+        .login-submit-button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background-color: #4285f4;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Hover effect for the submit button */
+        .login-submit-button:hover {
+            background-color: #357ae8;
+        }
+
+        /* Styling for alert boxes */
+        .alert-box-login {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            border: 2px solid white;
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+            z-index: 1000;
+            margin-top: 60;
+        }
+
+        /* Paragraph styling inside alert boxes */
+        .alert-box-login p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: gray;
+        }
+
+        /* Button styling inside alert boxes */
+        .alert-box-login button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background-color: #4285f4;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Hover effect for alert box buttons */
+        .alert-box-login button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling for the forgot password input field */
+        #forgotPasswordInput {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid #bfbdbd;
+            box-sizing: border-box;
+        }
+
+        .login-forgot-password-link {
+            text-align: right;
+            margin-bottom: 10px;
+            margin-top: -10px;
+            margin-right: 20px;
+        }
+
+        .login-forgot-password-link a {
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            color: #4285f4;
+            text-decoration: none;
+        }
+
+        .login-forgot-password-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Forgot Password box */
+        .forgot-password-box {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .forgot-password-content {
+            background: #fff;
+            border-radius: 24px;
+            padding: 20px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .forgot-password-content h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .forgot-password-content p {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .forgot-password-content input {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .forgot-password-content button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background-color: #4285f4;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .forgot-password-content button:hover {
+            background-color: #357ae8;
+        }
+
+        .forgot-password-close-button {
+            margin-top: 10px;
+            background-color: #4285f4;
+            color: white;
+        }
+
+        /* End of login page styles*/
+    </style>
+</head>
+
+<body class="login-body">
+
+    <!-- Login Form Container -->
+    <div class="login-form-container">
+        <!-- Form Title -->
+        <div class="form-box-login">
+            <h2 class="loginh2">Welcome to Mithaq</h2>
+            <h3 class="loginh3">Login</h3>
+            <!-- Login Form -->
+            <form id="loginForm" class="login-form">
+                <!-- Input for ID -->
+                <div class="login-input">
+                    <label for="id" class="login-input-label">ID</label>
+                    <input type="text" id="id" name="id" placeholder="Enter your ID:" class="login-input-field">
+                </div>
+                <!-- Input for Password -->
+                <div class="login-input">
+                    <label for="password" class="login-input-label">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your Password:"
+                        class="login-input-field">
+                </div>
+                <!-- Forgot Password Link -->
+                <div class="login-forgot-password-link">
+                    <a href="#" onclick="showForgotPasswordBox()">Forgot Password?</a>
+                </div>
+                <!-- Submit Button -->
+                <button type="button" class="login-submit-button" onclick="validateLogin()">Sign in</button>
+            </form>
+        </div>
+        <!-- Logo Image -->
+        <img src="/Assets/logo-login.png" class="login-logo" alt="Logo">
+    </div>
+    <!-- Forgot Password Box -->
+    <div id="forgotPasswordBox" class="forgot-password-box">
+        <div class="forgot-password-content">
+            <h3>Forgot Password?</h3>
+            <p>Don’t worry! It’s happens. Enter your ID.</p>
+            <input type="text" id="forgotPasswordInput" placeholder="Enter your ID">
+            <button onclick="handleForgotPassword()">Send OTP</button>
+            <button onclick="closeForgotPasswordBox()" class="forgot-password-close-button">Close</button>
+        </div>
+    </div>
+    <!-- OTP Verification Box -->
+    <div id="otpVerificationBox" class="forgot-password-box" style="display: none;">
+        <div class="forgot-password-content">
+            <h3>Verify OTP</h3>
+            <p>Enter the OTP sent to your registered phone number.</p>
+            <input type="text" id="otpInput" placeholder="Enter OTP">
+            <button onclick="handleVerifyOTP()">Verify OTP</button>
+            <button onclick="closeForgotPasswordBox()" class="forgot-password-close-button">Close</button>
+        </div>
+    </div>
+    <!-- Reset Password Box -->
+    <div id="resetPasswordBox" class="forgot-password-box" style="display: none;">
+        <div class="forgot-password-content">
+            <h3>Reset Password</h3>
+            <p>Please enter your new password.</p>
+            <input type="password" id="newPassword" placeholder="Enter new password">
+            <input type="password" id="confirmPassword" placeholder="Confirm new password">
+            <button onclick="handleResetPassword()">Reset Password</button>
+            <button onclick="closeForgotPasswordBox()" class="forgot-password-close-button">Close</button>
+        </div>
+    </div>
+
+
+    <!-- Alert for Password Reset Success -->
+    <div id="passwordResetAlert" class="alert-box-login" style="display: none;">
+        <p>Password reset link sent successfully to your registered phone number.</p>
+        <button onclick="closeAlert('passwordResetAlert')">Close</button>
+    </div>
+
+    <!-- Alert for Empty Fields -->
+    <div id="emptyFieldsError" class="alert-box-login" style="display: none;">
+        <p>Please enter your ID and password</p>
+        <button onclick="closeAlert('emptyFieldsError')">Close</button>
+    </div>
+
+    <!-- Alert for Invalid ID -->
+    <div id="invalidIdError" class="alert-box-login" style="display: none;">
+        <p>Incorrect ID. Please try again.</p>
+        <button onclick="closeAlert('invalidIdError')">Close</button>
+    </div>
+
+    <!-- Alert for Invalid Password -->
+    <div id="invalidPasswordError" class="alert-box-login" style="display: none;">
+        <p>Incorrect Password. Please try again.</p>
+        <button onclick="closeAlert('invalidPasswordError')">Close</button>
+    </div>
+
+    <!-- Inline JavaScript -->
+    <script>
+
+        /**
+         * Displays the Forgot Password box.
+         */
+        function showForgotPasswordBox() {
+            document.getElementById('forgotPasswordBox').style.display = 'flex';
+        }
+
+        /**
+         * Closes all Forgot Password-related modals.
+         */
+        function closeForgotPasswordBox() {
+            document.getElementById('forgotPasswordBox').style.display = 'none';
+            document.getElementById('otpVerificationBox').style.display = 'none';
+            document.getElementById('resetPasswordBox').style.display = 'none';
+        }
+
+        /**
+        * Handles sending the OTP for password recovery.
+        * Validates the input and sends a request to the server.
+         */
+        async function handleForgotPassword() {
+            const input = document.getElementById('forgotPasswordInput').value.trim();
+
+            if (input === '') {
+                document.getElementById('emptyFieldsError').style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/forgot-password/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ admin_id: parseInt(input) })
+                });
+
+                if (response.ok) {
+                    console.log("OTP sent successfully!");
+                    document.getElementById('forgotPasswordBox').style.display = 'none';
+                    document.getElementById('otpVerificationBox').style.display = 'flex';
+                } else {
+                    const errorData = await response.json();
+                    alertBox("Error", errorData.detail || "Failed to send OTP.");
+                }
+            } catch (err) {
+                console.error("Error:", err);
+                alertBox("Error", "Failed to connect to the server.");
+            }
+        }
+
+
+        /**
+        * Validates and sends OTP verification.
+        */
+        async function handleVerifyOTP() {
+            const otpInput = document.getElementById('otpInput').value.trim();
+            const adminId = document.getElementById('forgotPasswordInput').value.trim();
+
+            if (otpInput === '' || adminId === '') {
+                document.getElementById('emptyFieldsError').style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/verify-otp/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ admin_id: parseInt(adminId), otp: parseInt(otpInput) })
+                });
+
+                if (response.ok) {
+                    console.log("OTP verified successfully!");
+                    document.getElementById('otpVerificationBox').style.display = 'none';
+                    document.getElementById('resetPasswordBox').style.display = 'flex';
+                } else {
+                    const errorData = await response.json();
+                    alertBox("Error", errorData.detail || "Invalid OTP.");
+                }
+            } catch (err) {
+                console.error("Error:", err);
+                alertBox("Error", "Failed to connect to the server.");
+            }
+        }
+
+
+        /**
+        * Resets the password after verifying OTP.
+        * Ensures new and confirm passwords match before sending to the server.
+         */
+        async function handleResetPassword() {
+            const newPassword = document.getElementById('newPassword').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            const adminId = document.getElementById('forgotPasswordInput').value.trim();
+
+            if (newPassword === '' || confirmPassword === '') {
+                document.getElementById('emptyFieldsError').style.display = 'block';
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                document.getElementById('invalidPasswordError').style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/reset-password/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ admin_id: parseInt(adminId), new_password: newPassword })
+                });
+
+                if (response.ok) {
+                    console.log("Password reset successfully!");
+                    document.getElementById('resetPasswordBox').style.display = 'none';
+                    document.getElementById('passwordResetAlert').style.display = 'block';
+                } else {
+                    const errorData = await response.json();
+                    alertBox("Error", errorData.detail || "Failed to reset password.");
+                }
+            } catch (err) {
+                console.error("Error:", err);
+                alertBox("Error", "Failed to connect to the server.");
+            }
+        }
+
+
+        /**
+        * Validates login credentials and sends a login request.
+        */
+        async function validateLogin() {
+            const id = document.getElementById("id").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+
+            if (id === '' || password === '') {
+                document.getElementById('emptyFieldsError').style.display = 'block';
+                return;
+            }
+
+            try {
+
+                const response = await fetch("http://127.0.0.1:8000/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ id: parseInt(id), password: password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    alertBox("Login Successful", data.message);
+
+                    setTimeout(() => {
+                        window.location.href = '/main';
+                    }, 2000);
+                } else {
+                    const errorData = await response.json();
+                    if (errorData.detail === "Invalid ID or password") {
+                        document.getElementById('invalidPasswordError').style.display = 'block';
+                    } else {
+                        alertBox("Error", errorData.detail || "An unknown error occurred.");
+                    }
+                }
+            } catch (err) {
+                console.error("Error:", err);
+                alertBox("Error", "Failed to connect to the server. Please try again later.");
+            }
+        }
+
+        /**
+        * Displays a custom alert box with a title and message.
+        */
+        function alertBox(title, message) {
+            const alertBox = document.createElement("div");
+            alertBox.className = "alert-box-login";
+            alertBox.innerHTML = `
+        <h3>${title}</h3>
+        <p>${message}</p>
+        <button onclick="this.parentElement.style.display='none';">Close</button>
+    `;
+            document.body.appendChild(alertBox);
+        }
+
+        /**
+        *Show specific error alerts
+        */
+        function showEmptyFieldsError() {
+            document.getElementById('emptyFieldsError').style.display = 'block';
+        }
+
+        function showIdError() {
+            document.getElementById('invalidIdError').style.display = 'block';
+        }
+
+        function showPasswordError() {
+            document.getElementById('invalidPasswordError').style.display = 'block';
+        }
+
+        /**
+        * Closes the specified alert box by its ID.
+        */
+        function closeAlert(alertId) {
+            document.getElementById(alertId).style.display = 'none';
+        }
+
+    </script>
+</body>
+
+</html>

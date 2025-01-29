@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <!-- Chart.js library for creating charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* start of report page styles*/
+        .report-body {
+            font-family: Arial, sans-serif;
+            background-color: #E3F2FD;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Container for the entire reports section */
+        .reports-container {
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        main {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        /* Styling for the top reports header */
+        .reports-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Styling for navigation links */
+        .nav-link {
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: #f1f1f1;
+            color: #007bff;
+        }
+
+        .nav-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Logo styling */
+        .logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        .profile-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 180px;
+            z-index: 1000;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #444;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .dropdown-item img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
+        }
+
+        /* Container for statistics (cards displaying data) */
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px auto;
+            max-width: 1200px;
+            gap: 10px;
+        }
+
+        /* Styling for individual stat cards */
+        .stat-box {
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: left;
+            border: 2px solid #E3F2FD;
+            max-width: 300px;
+            margin: auto;
+            gap: 10px;
+        }
+
+        /* Styling for the title in the stat cards */
+        .stat-box h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #444;
+        }
+
+        /* Styling for the numeric values in the stat cards */
+        .stat-box p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        /* Styling for the image icon in stat cards */
+        .stat-box img {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 25px;
+            height: 25px;
+            opacity: 0.5;
+        }
+
+        /* Container for charts section */
+        .chart-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+            gap: 30px;
+        }
+
+        /* Styling for individual chart containers */
+        .chart-container {
+            width: 45%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 2px solid #E3F2FD;
+            margin-top: 20px;
+            position: relative;
+            height: 350px;
+        }
+
+        /* Ensure the chart canvas stays within the container */
+        .chart-container canvas {
+            position: relative;
+            z-index: 1;
+            max-height: 280px;
+        }
+
+        /* Styling for the report container (used for selection form) */
+        .report-container {
+            display: flex;
+            flex-direction: column;
+            width: 500px;
+            height: 350px;
+            margin: auto;
+            background: rgba(66, 133, 244, 0.1);
+            box-shadow: 0px -5px 0px 0px rgba(200, 197, 197, 0.5);
+            border-radius: 25px;
+            margin-top: 100px;
+            position: fixed;
+            top: 40%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Styling for the paragraph inside the report container */
+        .report-container p {
+            margin-bottom: 20px;
+            color: black;
+            text-align: left;
+            margin: 20px;
+        }
+
+        /* Styling for the form elements (select and button) */
+        form select,
+        form button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 95%;
+        }
+
+        /* Styling for the button in the form */
+        form button {
+            width: 30%;
+            padding: 12px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background-color: #4285f4;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 40px auto 0px 180px;
+        }
+
+        /* Hover effect for the button */
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling for the loading indicator */
+        #loading {
+            position: absolute;
+            top: 75%;
+            left: 75%;
+            transform: translate(-50%, -30%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Styling for the loading message */
+        #loading p {
+            color: #4285F4;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Styling for the loading image */
+        #loadingImage {
+            width: 60px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        /* Styling for the alert box */
+        .alert-box-report {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            border: 2px solid white;
+            padding: 20px;
+            border-radius: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+            z-index: 1000;
+            margin-top: 60;
+        }
+
+        /* Styling for the text inside the alert box */
+        .alert-box-report p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: gray;
+        }
+
+        /* Styling for the button inside the alert box */
+        .alert-box-report button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background-color: #4285f4;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Hover effect for the alert box button */
+        .alert-box-report button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling for the button in the chart section */
+        .chart-section button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            background-color: #4285f4;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 30px 0px 0px auto;
+            display: block;
+        }
+
+        /* Hover effect for the button in the chart section */
+        .chart-section button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styling for the circular icon container */
+        .icon-circle {
+            width: 40px;
+            height: 40px;
+            background-color: #f1f7ff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Styling for the image inside the circular icon */
+        .icon-circle img {
+            width: 25px;
+            height: 20px;
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%)
+        }
+
+        /* Styling for the container holding text */
+        .text-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Styling for headings in the text container */
+        .text-container h3 {
+            font-size: 14px;
+            color: gray;
+            font-family: 'Poppins', sans-serif;
+            margin: 0 0 5px;
+        }
+
+        /* Styling for paragraphs in the text container */
+        .text-container p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #001F54;
+            margin: 0;
+            font-family: 'Manrope';
+        }
+
+        /* Print Styles for Reports */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #extractBtn {
+                display: none !important;
+            }
+
+            .stats-container,
+            .stats-container *,
+            .chart-section,
+            .chart-section * {
+                visibility: visible;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .print-container {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin: 10px;
+                width: 100%;
+            }
+
+            .stats-container {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+                margin: 10px auto;
+                width: 100%;
+            }
+
+            .stat-box {
+                width: 30%;
+                text-align: center;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 10px;
+                background: #f9f9f9;
+                box-shadow: none;
+            }
+
+            .chart-section {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin: 10px auto;
+                width: 100%;
+            }
+
+            .chart-container {
+                text-align: center;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 10px;
+                background: #f9f9f9;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+
+            .chart-container h4 {
+                text-align: center;
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+
+            .chart-container canvas,
+            .chart-container img {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            @page {
+                size: A4 landscape;
+                margin: 5mm;
+            }
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+            }
+
+            .stats-container,
+            .chart-section {
+                page-break-before: avoid;
+                page-break-after: avoid;
+                break-inside: avoid;
+            }
+        }
+
+        /* End of report page styles*/
+    </style>
+</head>
+
+<body class="report-body">
+    <!-- Main container for the entire reports section -->
+    <div class="reports-container">
+        <!-- Header section with navigation and logo -->
+        <header class="reports-header">
+            <img src="/Assets/logo.png" alt="Mithaq Logo" class="logo">
+            <nav class="navbar-report">
+                <a href="/main" class="nav-link ">Home</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/promotionCriteria" class="nav-link">Promotion Criteria</a>
+                <a href="/reportsPage" class="nav-link active">Reports</a>
+                <a href="/resultsPage" class="nav-link">Results</a>
+            </nav>
+            <!-- Profile icon with dropdown menu -->
+            <div class="profile-icon" onclick="toggleDropdown()">
+                <img src="/Assets/profile-icon.png" alt="Profile">
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <img src="/Assets/settings.png" alt="Settings">Account settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a id="logout-btn" class="dropdown-item">
+                        <img src="/Assets/logout.png" alt="Logout">Logout
+                    </a>
+                </div>
+
+            </div>
+        </header>
+    </div>
+    <!-- Main content section -->
+    <main>
+        <div class="report-container" id="report-container">
+            <p>Reports available for this period</p>
+            <form id="report-form">
+                <select id="month" name="month" style="color: gray;">
+                    <option value="" disabled selected>Select the Month</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+
+                <button type="button" id="showReport">Show Report</button>
+            </form>
+        </div>
+
+        <div id="loading" style="display: none; text-align: center;">
+            <img id="loadingImage" src="Assets/loading.gif" alt="Loading...">
+            <p>Processing your request, this may take a moment...</p>
+        </div>
+        <!-- Statistics container -->
+        <div class="stats-container" style="display: none;">
+            <div class="stat-box">
+                <div class="icon-circle">
+                    <img src="Assets/Emp-Icon.png" alt="Employees Icon">
+                </div>
+                <div class="text-container">
+                    <h3>Total number of Employees</h3>
+                    <p id="totalEmployees">12,250</p>
+                </div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-circle">
+                    <img src="Assets/Department-Icon.png" alt="Departments Icon">
+                </div>
+                <div class="text-container">
+                    <h3>Total number of Departments</h3>
+                    <p id="totalDepartments">14</p>
+                </div>
+            </div>
+            <div class="stat-box">
+                <div class="icon-circle">
+                    <img src="Assets/Promoted-Icon.png" alt="Reports Icon">
+                </div>
+                <div class="text-container">
+                    <h3>Total Promoted Employees</h3>
+                    <p id="totalPromoted">83</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart section -->
+        <div class="chart-section" style="display: none;" id="charts-container">
+            <div class="chart-container">
+                <h4>Employee Promotion Statistics</h4>
+                <canvas id="promotionStatsChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h4>Employees per Department</h4>
+                <canvas id="employeesPerDepartmentChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h4>Employee Distribution by Department</h4>
+                <canvas id="employeeDistributionChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h4>Promotions by Department</h4>
+                <canvas id="promotionsByDepartmentChart"></canvas>
+            </div>
+
+            <button id="extractBtn">Extract</button>
+
+        </div>
+        <div id="custom-alert" class="alert-box-report" style="display: none;">
+            <p>Please select a month</p>
+            <button onclick="closeAlert()">Close</button>
+        </div>
+    </main>
+    <!-- Embedded JavaScript -->
+    <script>
+        let promotionStatsChart, employeesPerDeptChart, employeeDistChart, promotionsByDeptChart;
+        /**
+         * Handles the click event for the "Show Report" button.
+         * Fetches data from the server, updates statistics and charts on the page.
+         */
+
+        document.getElementById('showReport').addEventListener('click', async function () {
+            const month = document.getElementById('month').value;
+            if (!month) {
+                document.getElementById('custom-alert').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block';
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/statistics");
+                const data = await response.json();
+
+                console.log("Received data:", data);
+
+                // Handle mismatch in promotion statistics
+                const totalPromotionsByDepartment = data.promotions_by_department.reduce((sum, d) => sum + d.count, 0);
+                if (data.total_promoted !== totalPromotionsByDepartment) {
+                    console.warn(`Mismatch detected: Total Promoted (${data.total_promoted}) does not match Promotions by Department (${totalPromotionsByDepartment})`);
+                    alert("Warning: Total Promoted Employees does not match Promotions by Department. Please verify the data.");
+                }
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('report-container').style.display = 'none';
+
+                document.querySelector('.stats-container').style.display = 'flex';
+                document.getElementById('charts-container').style.display = 'flex';
+
+                // Update statistics
+                document.getElementById('totalEmployees').textContent = data.total_employees;
+                document.getElementById('totalDepartments').textContent = data.total_departments;
+                document.getElementById('totalPromoted').textContent = data.total_promoted;
+
+                // Destroy old charts if they exist
+                if (promotionStatsChart) promotionStatsChart.destroy();
+                if (employeesPerDeptChart) employeesPerDeptChart.destroy();
+                if (employeeDistChart) employeeDistChart.destroy();
+                if (promotionsByDeptChart) promotionsByDeptChart.destroy();
+
+                // Create new charts
+                const promotionStatsCtx = document.getElementById('promotionStatsChart').getContext('2d');
+                promotionStatsChart = new Chart(promotionStatsCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Promoted', 'Unpromoted'],
+                        datasets: [{
+                            data: [data.promotion_stats.promoted, data.promotion_stats.unpromoted],
+                            backgroundColor: ['#4318FF', '#6AD2FF'],
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                    },
+                });
+
+                const colors = ['#4318FF', '#6AD2FF', '#EFF4FB', '#3354F4', '#6CB9AD', '#324DDD'];
+                const employeesPerDeptCtx = document.getElementById('employeesPerDepartmentChart').getContext('2d');
+                employeesPerDeptChart = new Chart(employeesPerDeptCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: data.employees_per_department.map(d => d.department),
+                        datasets: [{
+                            data: data.employees_per_department.map(d => d.count),
+                            backgroundColor: colors.slice(0, data.employees_per_department.length),
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                    },
+                });
+
+                const employeeDistCtx = document.getElementById('employeeDistributionChart').getContext('2d');
+                employeeDistChart = new Chart(employeeDistCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.employees_per_department.map(d => d.department),
+                        datasets: [
+                            {
+                                label: 'Female',
+                                data: data.employees_distribution.female,
+                                backgroundColor: '#6CB9AD',
+                            },
+                            {
+                                label: 'Male',
+                                data: data.employees_distribution.male,
+                                backgroundColor: '#324DDD',
+                            },
+                        ],
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                stacked: false,
+                                barPercentage: 0.4,
+                                categoryPercentage: 0.8
+                            },
+                            y: {
+                                beginAtZero: true
+                            },
+                        },
+                    },
+                });
+
+                const promotionsByDeptCtx = document.getElementById('promotionsByDepartmentChart').getContext('2d');
+                promotionsByDeptChart = new Chart(promotionsByDeptCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: data.promotions_by_department.map(d => d.department),
+                        datasets: [{
+                            label: 'Promotions',
+                            data: data.promotions_by_department.map(d => d.count),
+                            backgroundColor: '#3354F4',
+                        }],
+                    },
+                    options: {
+                        responsive: true,
+                    },
+                });
+            } catch (error) {
+                console.error("Error fetching statistics:", error);
+                document.getElementById('loading').style.display = 'none';
+                alert('Failed to fetch data. Please try again.');
+            }
+        });
+        /**
+         * Logs out the user by sending a logout request to the server.
+         */
+
+        document.getElementById("logout-btn").addEventListener("click", function (e) {
+            e.preventDefault();
+
+
+            if (confirm("Are you sure you want to logout?")) {
+
+                fetch("http://127.0.0.1:8000/logout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => {
+                        if (response.ok) {
+
+                            window.location.href = "/";
+
+                        } else {
+                            alert("Failed to logout. Please try again.");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error during logout:", error);
+                        alert("An error occurred during logout. Please try again.");
+                    });
+            }
+        });
+        /**
+         * Prints the report by triggering the browser's print functionality.
+         */
+        document.getElementById('extractBtn').addEventListener('click', function () {
+            window.print();
+            document.body.innerHTML = originalContent;
+            location.reload();
+        });
+
+
+        /**
+         * Closes the custom alert box.
+         */
+
+        function closeAlert() {
+            document.getElementById('custom-alert').style.display = 'none';
+        }
+        /**
+        * Toggles the visibility of the dropdown menu.
+        */
+        function toggleDropdown() {
+            const dropdown = document.querySelector('.dropdown-menu');
+            dropdown.classList.toggle('active');
+        }
+        /**
+        * Hides the dropdown menu when clicking outside of it.
+        */
+        window.addEventListener('click', (e) => {
+            const profileIcon = document.querySelector('.profile-icon');
+            const dropdown = document.querySelector('.dropdown-menu');
+            if (!profileIcon.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+    </script>
+</body>
+
+</html>

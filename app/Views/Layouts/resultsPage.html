@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        /* start of result page styles*/
+        .results-body {
+            font-family: Arial, sans-serif;
+            background-color: #E3F2FD;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        /* Container for the entire results section */
+        .results-container {
+            width: 100%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        /* Header section styling */
+        .results-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Styling for navigation links */
+        .nav-link {
+            text-decoration: none;
+            color: #444;
+            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 50px;
+        }
+
+        .nav-link:hover {
+            background-color: #f1f1f1;
+            color: #007bff;
+        }
+
+        .nav-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Logo styling */
+        .logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        .profile-icon {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-icon img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* Styling for the loading indicator */
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+        
+
+        /* Styling for the loading message */
+        #loading p {
+            color: #4285F4;
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Styling for the loading image */
+        #loadingImage {
+            width: 60px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 180px;
+            z-index: 1000;
+        }
+
+        .dropdown-menu.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #444;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .dropdown-item img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: #ddd;
+            margin: 5px 0;
+        }
+
+        /* Styling for table container */
+        .table-container {
+            margin: 20px auto;
+            max-width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .table-wrapper {
+            min-width: 1200px;
+            min-height: 100%;
+        }
+
+        .row-results {
+            display: flex;
+            width: 1500px;
+            background-color: white;
+            margin: 10px 15px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .row-results div {
+            flex: 1;
+            padding: 10px;
+            white-space: normal;
+            overflow: visible;
+            text-overflow: unset;
+            border-right: none;
+        }
+
+
+        .row-results.header {
+            font-weight: bold;
+            color: gray;
+            background-color: #E3F2FD;
+            box-shadow: none;
+            margin-top: 90px;
+            text-align: center;
+
+        }
+
+        .row-results.header div {
+            white-space: normal;
+            text-align: center;
+            font-weight: bold;
+            padding: 8px 5px;
+            overflow: visible;
+            word-wrap: break-word;
+        }
+
+        /* Styling for alternating row colors */
+        .row-results:nth-child(even) {
+            opacity: 0.8;
+        }
+
+        .row-results:nth-child(odd) {
+            opacity: 0.5;
+        }
+
+        .promoted-results {
+            background-color: #e8fcef;
+            color: #4caf50;
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 20px;
+            width: fit-content;
+            margin: auto;
+        }
+
+        .not-promoted-results {
+            background-color: #fde8e8;
+            color: #f75c51;
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 20px;
+            width: fit-content;
+            margin: auto;
+            font-size: 14px;
+        }
+
+        /* End of result page styles*/
+    </style>
+</head>
+
+<body class="results-body">
+    <!-- Main container for the results page -->
+    <div class="results-container">
+        <header class="results-header">
+            <img src="Assets/logo.png" alt="Mithaq Logo" class="logo">
+            <nav class="navbar-report">
+                <!-- Navigation bar -->
+                <a href="/main" class="nav-link ">Home</a>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <a href="/promotionCriteria" class="nav-link">Promotion Criteria</a>
+                <a href="/reportsPage" class="nav-link">Reports</a>
+                <a href="/resultsPage" class="nav-link active">Results</a>
+            </nav>
+            <!-- Profile icon with dropdown menu -->
+            <div class="profile-icon" onclick="toggleDropdown()">
+                <img src="/Assets/profile-icon.png" alt="Profile">
+                <div class="dropdown-menu">
+                    <a href="/profile" class="dropdown-item">
+                        <img src="/Assets/settings.png" alt="Settings">Account settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a id="logout-btn" class="dropdown-item">
+                        <img src="/Assets/logout.png" alt="Logout">Logout
+                    </a>
+                </div>
+
+            </div>
+        </header>
+    </div>
+
+    <div id="loading" style="display: none; text-align: center;">
+        <img id="loadingImage" src="Assets/loading.gif" alt="Loading...">
+        <p>Processing your request, this may take a moment...</p>
+    </div>
+
+    <!-- Container for displaying the results table -->
+    <div class="table-container" id="tableContainer">
+    </div>
+
+
+
+
+    <script>
+        /**
+         * Toggles the visibility of the profile dropdown menu.
+         */
+        function toggleDropdown() {
+            const dropdown = document.querySelector('.dropdown-menu');
+            dropdown.classList.toggle('active');
+        }
+
+        window.addEventListener('click', (e) => {
+            const profileIcon = document.querySelector('.profile-icon');
+            const dropdown = document.querySelector('.dropdown-menu');
+            if (!profileIcon.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+        /**
+         * Fetches employee data from the server and displays it in the table.
+         */
+
+        async function fetchData() {
+            try {
+                document.getElementById('loading').style.display = 'block';
+                const response = await fetch("http://127.0.0.1:8000/results");
+                const results = await response.json();
+
+                const tableContainer = document.getElementById("tableContainer");
+                let tableContent = `
+                <div class="row-results header">
+                    <div>Employee Name</div>
+                    <div>ID</div>
+                    <div>Department</div>
+                    <div>Education</div>
+                    <div>Region</div>
+                    <div>Avg Training Score</div>
+                    <div>Length of Service</div>
+                    <div>Previous Year Rating</div>
+                    <div>Is Promoted</div>
+                    <div>Training Name</div>
+                </div>
+                
+            `;
+                const educationCounts = {};
+                results.forEach(emp => {
+                    if (emp.Education && emp.Education !== "Unknown" && emp.Education !== "NaN") {
+                        educationCounts[emp.Education] = (educationCounts[emp.Education] || 0) + 1;
+                    }
+                });
+
+
+                const mostCommonEducation = Object.keys(educationCounts).reduce((a, b) =>
+                    educationCounts[a] > educationCounts[b] ? a : b,
+                    "Unknown"
+                );
+
+
+                results.forEach(emp => {
+                    const promotionClass = emp.Is_Promoted === "Yes" ? "promoted-results" : "not-promoted-results";
+                    const regionName = emp.Region || "Unknown";
+                    const employeeName = emp.Employee_name || "Unknown";
+                    const employeeID = emp.ID || "N/A";
+                    const department = emp.Department || "Unknown";
+                    const educationValue = (
+                        !emp.Education ||
+                        emp.Education === "NaN" ||
+                        emp.Education === null ||
+                        emp.Education === undefined ||
+                        emp.Education.toLowerCase() === "nan"
+                    ) ? mostCommonEducation : emp.Education;
+                    const avgTrainingScore = emp.Avg_Training_Score || 0;
+                    const lengthOfService = emp.Length_of_Service || 0;
+                    const previousYearRating = emp.Previous_Year_Rating || 0;
+                    const isPromoted = emp.Is_Promoted || "No";
+                    const trainingName = emp.Training_Name || "-";
+
+
+                    tableContent += `
+                    <div class="row-results">
+                        <div>${employeeName}</div>
+                        <div>${employeeID}</div>
+                        <div>${department}</div>
+                        <div>${educationValue}</div>
+                        <div>${regionName}</div>
+                        <div>${avgTrainingScore}</div>
+                        <div>${lengthOfService}</div>
+                        <div>${previousYearRating}</div>
+                        <div class="${promotionClass}">${isPromoted}</div>
+                        <div>${trainingName}</div>
+                    </div>
+                `;
+                });
+
+                tableContainer.innerHTML = tableContent;
+                document.getElementById('loading').style.display = 'none';
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+                const tableContainer = document.getElementById("tableContainer");
+                tableContainer.innerHTML = "<p>Error loading data. Please try again later.</p>";
+
+                // Hide loading indicator if there's an error
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        /**
+             * Handles the logout process by sending a request to the server.
+             */
+        document.addEventListener("DOMContentLoaded", function () {
+            const logoutButton = document.getElementById("logout-btn");
+            if (logoutButton) {
+                logoutButton.addEventListener("click", function (e) {
+                    e.preventDefault(); // Prevent default action
+                    if (confirm("Are you sure you want to logout?")) {
+                        fetch("http://127.0.0.1:8000/logout", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    window.location.href = "/";
+                                } else {
+                                    alert("Failed to logout. Please try again.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error during logout:", error);
+                                alert("An error occurred during logout. Please try again.");
+                            });
+                    }
+                });
+            } else {
+                console.error("Logout button not found on this page.");
+            }
+        });
+
+
+        // Fetch data when the page loads
+        fetchData();
+    </script>
+</body>
+
+</html>
