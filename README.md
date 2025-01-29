@@ -4,13 +4,13 @@
 
 **1- [Introduction](#1-Introduction)**
 
-**2- [Technologies Used](#2-TechnologiesUsed)**
+**2- [Technologies Used](#2-Technologies-Used)**
 
-**3- [Installation Procedure](#3-InstallationProcedure)**
+**3- [Installation Procedure](#3-Installation-Procedure)**
 
-**4- [Performance & Results](#4-Performance&Results)**
+**4- [Performance & Results](#4-Performance--Results)**
 
-**5- [System Design & Architecture](#5-SystemDesign&Architecture)**
+**5- [System Design & Architecture](#5-System-Design--Architecture)**
 
 **6- [Conclusion](#6-Conclusion)**
 
