@@ -73,8 +73,8 @@ Step	macOS	Windows
 # Performance & Results
 
 The model achieved 94.23% accuracy, outperforming previous research:
-	•	81.15% accuracy in study [6]
-	•	91.70% accuracy in study [7]
+	•	81.15% accuracy in study [1]
+	•	91.70% accuracy in study [2]
 
 Key Optimization Techniques
 	•	Hyperparameter tuning (number of trees, max depth, feature selection).
