@@ -92,6 +92,7 @@ https://drive.google.com/file/d/1gg4hZkoZ8YC9p-guBjrcq1nSAj36nO88/view?usp=shari
 Open the Terminal and run:
 
 cd /your/path/to/the/project
+**note: you should update main.py file with your actual path(/your/path/to/the/project)**
 
 
 	4.	Create a Virtual Environment
