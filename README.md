@@ -70,7 +70,7 @@ Database Setup
 
 2. Open config.py and update the DATABASE_URL with your MySQL username and password:
 
-DATABASE_URL = "mysql+pymysql://your_username:your_password@localhost/managementDB"
+	DATABASE_URL = "mysql+pymysql://your_username:your_password@localhost/managementDB"
 
 
 # 3- Installation Procedure
