@@ -62,62 +62,76 @@ CREATE DATABASE mangmentDB;
 
 **Deployment Procedure for macOS**
 
-	1.	Navigate to the Project Directory
+        1.	Download the Model File
+	
+https://drive.google.com/file/d/1gg4hZkoZ8YC9p-guBjrcq1nSAj36nO88/view?usp=sharing
+
+        2.	Move the Model File to the Model folder inside the MITHAQ folder
+	
+
+	3.	Navigate to the Project Directory
 Open the Terminal and run:
 
 cd /your/path/to/the/project
 
 
-	2.	Create a Virtual Environment
+	4.	Create a Virtual Environment
 Run the following command to create a virtual environment:
 
 python3 -m venv venv
 
 
-	3.	Activate the Virtual Environment
+	5.	Activate the Virtual Environment
 Use this command to activate the virtual environment:
 
 source ./venv/bin/activate
 
 
-	4.	Install Required Dependencies
+	6.	Install Required Dependencies
 Install all required dependencies by running:
 
 pip install -r requirements.txt
 
 
-	5.	Launch the System
+	7.	Launch the System
 Start the application by running:
 
 python -m uvicorn app.main:app --reload
 
 **Deployment Procedure for Windows**
 
-	1.	Navigate to the Project Directory
+
+        1.	Download the Model File
+	
+https://drive.google.com/file/d/1gg4hZkoZ8YC9p-guBjrcq1nSAj36nO88/view?usp=sharing
+
+        2.	Move the Model File to the Model folder inside the MITHAQ folder
+
+	3.	Navigate to the Project Directory
 Open Command Prompt or PowerShell and run:
 
 cd /your/path/to/the/project
 
 
-	2.	Create a Virtual Environment
+	4.	Create a Virtual Environment
 Run the following command to create a virtual environment:
 
 python -m venv venv
 
 
-	3.	Activate the Virtual Environment
+	5.	Activate the Virtual Environment
 Activate the virtual environment using this command:
 
 .\venv\Scripts\activate
 
 
-	4.	Install Required Dependencies
+	6.	Install Required Dependencies
 Install all required dependencies by running:
 
 pip install -r requirements.txt
 
 
-	5.	Launch the System
+	7.	Launch the System
 Start the application by running:
 
 python -m uvicorn app.main:app --reload
