@@ -161,6 +161,7 @@ python -m uvicorn app.main:app --reload
 # 4- Performance & Results
 
 The proposed solution achieved a high accuracy of 94.23% using the same dataset in [3], surpassing previous research:
+
 	•	81.15% accuracy in study [1]
 	•	91.70% accuracy in study [2]
  
