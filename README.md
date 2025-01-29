@@ -4,9 +4,9 @@
 
 This project aims to enhance employee promotion and training development by integrating machine learning (ML), specifically the Random Forest (RF) model, to improve decision-making in HR management. By addressing inefficiencies and biases in traditional HR processes, the system ensures fair, transparent, and data-driven employee evaluations. It also introduces training recommendations for non-promoted employees to support their professional growth.
 
-Through MVC architecture, ER diagrams, and object-oriented design principles, the project ensures scalability and data integrity. Additionally, sequence diagrams, flowcharts, and black-box testing validate system goals and expected functionality.
 
-Key Features
+**Key Features**
+
 	•	Fair Employee Promotion Process – ML-driven predictions ensure unbiased and efficient promotions.
 	•	Training Recommendations – Non-promoted employees receive training suggestions based on skill gaps.
 	•	High Accuracy (94.23%) – Achieved through hyperparameter tuning, SMOTE, and data preprocessing.
@@ -58,7 +58,7 @@ CREATE DATABASE mangmentDB;
 
 # Installation Procedure
 
-Step	macOS	Windows
+**Step	macOS	Windows**
 
 1. Navigate to Project Directory	cd /your/path/to/the/project	cd /your/path/to/the/project
 
@@ -76,7 +76,8 @@ The model achieved 94.23% accuracy, outperforming previous research:
 	•	81.15% accuracy in study [1]
 	•	91.70% accuracy in study [2]
 
-Key Optimization Techniques
+**Key Optimization Techniques**
+
 	•	Hyperparameter tuning (number of trees, max depth, feature selection).
 	•	Cross-validation to ensure model consistency.
 	•	SMOTE (Synthetic Minority Oversampling Technique) for data balancing.
